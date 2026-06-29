@@ -34,6 +34,7 @@ body{
     font-size: 24px;
     color: #6A24FE;
     margin-bottom: 20px;
+    /* 선택한 요소의 아래쪽 바깥 여백을 설정하는 코드 */
 }
 #login_form > input{
     width: 100%;
@@ -42,6 +43,7 @@ body{
     box-sizing: border-box;
     margin-bottom: 16px;
     border-radius: 6px;
+    /* 모서리를 부드럽고 둥글게 깎아주는 코드 */
     background-color: #f8f8f8;
 }
 #login_form > input::placeholder{

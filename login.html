@@ -1,15 +1,54 @@
 <!DOCTYPE html>
  <!-- 문서 형식 선언(Document Type Declaration, 줄여서 DOCTYPE)  -->
 <html lang="ko">
-    <!-- html lang="en"은 웹 문서의 전체 시작을 알리는 <html> 태그에 "이 웹 페이지의 기본 언어는 영어(English)입니다"라고 브라우저에게 알려주는 속성(Attribute)
-         ko = korean -->
+    <!-- html lang="en"은 웹 문서의 전체 시작을 알리는 
+    <html> 태그에 "이 웹 페이지의 기본 언어는 영어(English)입니다"라고 
+    브라우저에게 알려주는 속성(Attribute) / ko = korean -->
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="login.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" ...> 태그는 한마디로 "브라우저야, 이 웹사이트 사용자가 스마트폰으로 보든, 태블릿으로 보든, 모니터로 보든 그 화면 크기(디바이스)에 맞춰서
+    글자나 레이아웃 비율을 자동으로 딱 맞게 조절해 줘!"라고 지시하는 명령어 -->
     <title>Document</title>
 </head>
 <body>
-   
+    <div class ="login">
+        <!-- <div>는 Division(분할/구역)의 약자야.
+        이 태그는 자체적으로는 아무런 디자인도, 기능도 가지고 있지 않아. 
+        오직 "웹페이지의 특정 구역을 네모난 상자(박스) 형태로 묶어주기 위해" 사용하는 태그 -->
+        
+        <!-- div 태그에 wrapper나 container 같은 클래스명을 붙이는 건 
+        "이 안에 들어가는 요소들을 하나로 묶어서 화면 가운데에 예쁘게
+        배치하거나 구역을 통제하겠다"는 아주 전형적이고 훌륭한 논리적 설계 방식 -->
+
+        <!-- 어떤 div 상자가 무슨 상자인지" 도무지 구분할 수가 없기 때문에 
+        이때 상자 겉면에 붙이는 네임텍(이름표) 속성이 바로 class -->
+        <h2>Login</h2>
+        <form method="post" action="Server_URL" id="login_form">
+            <!--HTML의 <form> 태그는 사용자로부터 입력을 받아 서버로 전송할 때
+            사용하는 최상위 컨테이너입니다. 로그인, 회원가입, 검색, 글쓰기 등 
+            웹 페이지에서 사용자의 데이터를 수집하는 모든 곳에 사용 -->
+
+            <!-- <form> 태그가 제대로 작동하려면 데이터를 어디로(action), 
+            어떤 방식(method)으로 보낼지 지정해야 함 -->
+
+            <!-- action: 폼 데이터를 전송할 서버의 URL 주소를 지정 (예: action="/login")
+
+            method: 데이터 전송 방식을 HTTP 메서드로 지정. 주로 GET과 POST가 사용됩니다. -->
+            <input type="text" name="UserName" placeholder="ID">
+            <!-- placeholder는 입력 필드에 사용자가 어떤 값을 입력해야 하는지를 간략하게 
+            알려주는 역할을 한다. 단어 혹은 짧은 문구가 들어가며 사용자가 입력하는 즉시 사라진다. -->
+            <input type="password" name="UserPassword" placeholder="Password">
+            
+            <label for="remember-check">
+                <input type="checkbox" id="remember-check">아이디 저장하기
+            <!-- <label> 태그의 for=""와 <input> 태그의 id=""를 동일하게 적어 연결시켜주면, 
+            checkbox 혹은 '아이디 저장하기' 둘 중 아무거나 클릭해도 체크가 자동으로 활성화 -->
+            </label><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
 </body>
 </html>
 

@@ -5,29 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>House Link - 프로필 설정</title>
     <link rel="stylesheet" href="profile.css">
+    <style>
+        /* 프로필 페이지 내에서 상단바 프로필 정렬이 깨지는 것 방지 */
+        .header-right .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="header-date" id="current-date"></div>
+    <header class="main-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 15px 24px; box-sizing: border-box;">
+        <div class="header-date" id="current-date" style="flex: 1; text-align: left;"></div>
 
-        <!-- <div class="header-center">
-            <a href="/Main/main_p.html" style="text-decoration: none; color: inherit;"><h1>House Link</h1></a>
-            <div class="nav-slider-wrapper">
-                <nav class="nav-links" style="justify-content: center; pointer-events: none; opacity: 0.5;">
-                    <div class="menu-item-group"><a href="#">프로필 설정 모드</a></div>
-                </nav>
-            </div>
-        </div> -->
+        <div class="header-center" style="flex: 1; text-align: center;">
+            <a href="index.html" style="text-decoration: none; color: inherit; display: inline-block;">
+                <h1 style="margin: 0; font-size: 1.8rem; font-weight: 800;">House Link</h1>
+            </a>
+        </div>
 
-        <div class="header-right">
-            <div class="profile-section">
-                <img class="profile-img" id="header-avatar" src="https://via.placeholder.com/46" alt="프로필 사진">
-                <span class="profile-name" id="header-name">홍길동 님</span>
+        <div class="header-right" style="flex: 1; display: flex; justify-content: flex-end;">
+            <div class="profile-section" style="display: flex; align-items: center; gap: 10px;">
+                <img class="profile-img" id="header-avatar" src="https://via.placeholder.com/46" alt="프로필 사진" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover;">
+                <span class="profile-name" id="header-name" style="font-weight: 500; color: #1a1a1a;">홍길동 님</span>
             </div>
         </div>
     </header>
-
+    
     <main style="padding: 20px;">
         <div class="profile-container">
             <h2 class="profile-page-title">내 프로필 설정</h2>
@@ -55,7 +60,7 @@
 
             <div class="profile-btn-wrap">
                 <button class="save-info-btn" id="save-profile-btn">변경사항 저장하기</button>
-                <a href="/Main/main_p.html" class="back-home-btn">메인 화면으로 돌아가기</a>
+                <a href="index.html" class="back-home-btn">메인 화면으로 돌아가기</a>
                 
                 <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 10px 0;">
                 
@@ -81,6 +86,7 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    // 중앙 동그라미 이미지와 상단 우측 헤더 미니 이미지만 정확하게 교체
                     profilePreview.src = e.target.result;
                     headerAvatar.src = e.target.result;
                 }

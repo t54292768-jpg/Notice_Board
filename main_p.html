@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House Link - 메인 허브</title>
+    <title>House Link - 슬라이드 허브</title>
     <style>
         /* 기본 스타일 초기화 */
         * {
@@ -18,81 +18,122 @@
             color: #333;
         }
 
-        /* 헤더 전체 컨테이너 */
+        /* 헤더 전체 컨테이너: 창을 줄여도 구조가 깨지지 않게 flex-shrink 방어 */
         .main-header {
             display: grid;
-            grid-template-columns: 1fr 2fr 1fr; /* 좌(날짜), 중(로고/링크), 우(프로필) 3분할 */
-            padding: 20px 40px;
+            grid-template-columns: 140px 1fr 140px; /* 좌우 영역 크기를 고정하여 절대 깨지지 않게 설정 */
+            padding: 20px 30px;
             background-color: #ffffff;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             align-items: start;
+            gap: 15px;
         }
 
-        /* 1. 좌측 상단: 날짜 */
+        /* 1. 좌측 상단: 날짜 (고정폭 안에서 안전하게 렌더링) */
         .header-date {
             font-size: 0.8rem;
             color: #888888;
             font-weight: 400;
             padding-top: 8px;
+            white-space: nowrap;
         }
 
-        /* 2. 중앙: House Link & 핵심 기능 하이퍼링크 */
+        /* 2. 중앙: House Link & 슬라이드 메뉴 */
         .header-center {
             text-align: center;
+            min-width: 0; /* 중요: grid 안에서 자식의 overflow가 정상 작동하게 방어 */
         }
 
         .header-center h1 {
-            font-size: 2.2rem; /* 로고 느낌을 주기 위해 살짝 키움 */
+            font-size: 2.2rem;
             color: #1a1a1a;
             margin-bottom: 15px;
             letter-spacing: -0.5px;
             font-weight: 700;
         }
 
+        /* 버튼과 메뉴를 감싸는 컨테이너 (너비를 950px로 크게 넓힘) */
+        .nav-slider-wrapper {
+            max-width: 950px; 
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 0 35px; /* 버튼이 들어갈 공간 확보 */
+        }
+
+        /* 슬라이드 이동 버튼 */
+        .slide-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 26px;
+            height: 26px;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: #4a5568;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            user-select: none;
+            z-index: 10;
+            transition: all 0.2s;
+        }
+        .slide-btn:hover {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+        .slide-btn.left { left: 0; }
+        .slide-btn.right { right: 0; }
+
+        /* 메뉴 스크롤 박스 */
         .nav-links {
             display: flex;
-            justify-content: center;
-            gap: 35px; /* 메뉴 간격 살짝 넓힘 */
+            align-items: center;
+            gap: 24px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 5px 0;
+            scroll-behavior: smooth; /* 버튼 클릭 시 부드럽게 스크롤 이동 */
+            
+            /* 스크롤바 숨기기 */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .nav-links::-webkit-scrollbar {
+            display: none;
         }
 
         .nav-links a {
             text-decoration: none;
             color: #4a5568;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
-            position: relative;
-            padding-bottom: 4px;
             transition: color 0.2s;
+            flex-shrink: 0; /* 창이 줄어들어도 글자가 찌그러지지 않음 */
         }
-
-        /* 마우스 올렸을 때 효과 (언더라인 애니메이션) */
         .nav-links a:hover {
             color: #007bff;
         }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            transform: scaleX(0);
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #007bff;
-            transform-origin: bottom right;
-            transition: transform 0.25s ease-out;
-        }
-        
-        .nav-links a:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
+
+        .nav-links .divider {
+            color: #cbd5e0;
+            font-size: 0.8rem;
+            user-select: none;
+            flex-shrink: 0;
         }
 
-        /* 3. 우측 상단: 프로필 & 사이드 메뉴판 */
+        /* 3. 우측 상단: 프로필 & 미니 메뉴판 */
         .header-right {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            white-space: nowrap;
         }
 
         .profile-section {
@@ -118,7 +159,6 @@
             font-weight: bold;
         }
 
-        /* 미니 메뉴판 (투두리스트 및 목표 관리용) */
         .menu-box {
             background-color: #ffffff;
             border: 1px solid #e2e8f0;
@@ -128,10 +168,7 @@
             overflow: hidden;
         }
 
-        .menu-box ul {
-            list-style: none;
-        }
-
+        .menu-box ul { list-style: none; }
         .menu-box li a {
             display: block;
             padding: 8px 10px;
@@ -140,20 +177,11 @@
             font-size: 0.75rem;
             text-align: center;
             border-bottom: 1px solid #f1f5f9;
-            transition: background 0.2s;
         }
+        .menu-box li:last-child a { border-bottom: none; }
+        .menu-box li a:hover { background-color: #f8fafc; color: #007bff; }
 
-        .menu-box li:last-child a {
-            border-bottom: none;
-        }
-
-        .menu-box li a:hover {
-            background-color: #f8fafc;
-            color: #007bff;
-            font-weight: 500;
-        }
-
-        /* 메인 콘텐츠 영역 (중앙 정렬) */
+        /* 메인 콘텐츠 영역 */
         .container {
             max-width: 1200px;
             margin: 40px auto;
@@ -166,29 +194,52 @@
 <body>
 
     <header class="main-header">
+        <!-- 좌측 날짜 -->
         <div class="header-date" id="current-date"></div>
 
+        <!-- 중앙 메뉴 및 버튼 제어 장치 -->
         <div class="header-center">
             <h1>House Link</h1>
-            <nav class="nav-links">
-                <a href="#calendar">캘린더</a>
-                <a href="#diary">다이어리</a>
-                <a href="#travel">여행 기록</a>
-                <a href="#account">가계부</a>
-            </nav>
+            
+            <div class="nav-slider-wrapper">
+                <!-- 왼쪽 화살표 버튼 -->
+                <button class="slide-btn left" id="slide-left">◀</button>
+                
+                <nav class="nav-links" id="nav-links">
+                    <a href="#calendar">캘린더</a>
+                    <span class="divider">•</span>
+                    <a href="#diary">다이어리</a>
+                    <span class="divider">•</span>
+                    <a href="#travel">여행 기록</a>
+                    <span class="divider">•</span>
+                    <a href="#account">가계부</a>
+                    <span class="divider">•</span>
+                    <a href="#fridge">냉장고 관리</a>
+                    <span class="divider">•</span>
+                    <a href="#todo">To-Do List</a>
+                    <span class="divider">•</span>
+                    <a href="#monthly-goal">이달의 목표</a>
+                    <span class="divider">•</span>
+                    <a href="#yearly-goal">올해의 목표</a>
+                    <span class="divider">•</span>
+                    <a href="#bucket">개인 버킷리스트</a>
+                </nav>
+                
+                <!-- 오른쪽 화살표 버튼 -->
+                <button class="slide-btn right" id="slide-right">▶</button>
+            </div>
         </div>
 
+        <!-- 우측 프로필 -->
         <div class="header-right">
             <div class="profile-section">
                 <img class="profile-img" src="https://via.placeholder.com/45" alt="프로필 사진">
-                <span class="profile-name">우리 가족 님</span>
+                <span class="profile-name">홍길동 님</span>
             </div>
-            
             <div class="menu-box">
                 <ul>
-                    <li><a href="#todo">To-Do List</a></li>
-                    <li><a href="#monthly-goal">이달의 목표</a></li>
-                    <li><a href="#yearly-goal">올해의 목표</a></li>
+                    <li><a href="#my-profile">내 정보 수정</a></li>
+                    <li><a href="#settings">설정</a></li>
                     <li><a href="#logout" style="color: #e53e3e;">로그아웃</a></li>
                 </ul>
             </div>
@@ -196,21 +247,34 @@
     </header>
 
     <main class="container">
-        <p>위의 메뉴를 클릭하면 해당 기능 화면이 여기에 표시됩니다.</p>
+        <p>좌우 화살표 버튼(◀, ▶)을 누르면 메뉴가 한 칸씩 옆으로 부드럽게 이동합니다.</p>
     </main>
 
     <script>
-        // 현재 날짜 반영 스크립트
+        // 1. 날짜 노출 스크립트
         const dateElement = document.getElementById('current-date');
         const today = new Date();
         const year = today.getFullYear();
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
-        
         const weekMap = ['일', '월', '화', '수', '목', '금', '토'];
-        const dayOfWeek = weekMap[today.getDay()];
+        dateElement.innerText = `${year}.${month}.${day} (${weekMap[today.getDay()]})`;
 
-        dateElement.innerText = `${year}.${month}.${day} (${dayOfWeek})`;
+        // 2. 버튼 클릭 시 한 칸씩 이동하는 슬라이드 스크립트
+        const navLinks = document.getElementById('nav-links');
+        const btnLeft = document.getElementById('slide-left');
+        const btnRight = document.getElementById('slide-right');
+
+        // 이동할 거리 (메뉴 한 칸 정도의 대략적인 너비 + 간격)
+        const scrollAmount = 140; 
+
+        btnLeft.addEventListener('click', () => {
+            navLinks.scrollLeft -= scrollAmount;
+        });
+
+        btnRight.addEventListener('click', () => {
+            navLinks.scrollLeft += scrollAmount;
+        });
     </script>
 </body>
 </html>

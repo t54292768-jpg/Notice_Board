@@ -1,0 +1,197 @@
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* 헤더 전체 컨테이너: 좌우 날짜/프로필 여백 최소화 */
+.main-header {
+    display: grid;
+    grid-template-columns: 100px 1fr 100px; 
+    padding: 20px 30px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    align-items: start;
+    gap: 5px;
+}
+
+/* 1. 좌측 상단: 날짜 */
+.header-date {
+    font-size: 0.75rem;
+    color: #a0aec0;
+    font-weight: 400;
+    padding-top: 8px;
+    white-space: nowrap;
+}
+
+/* 2. 중앙: 메뉴 라인 */
+.header-center {
+    text-align: center;
+    min-width: 0; 
+}
+
+.header-center h1 {
+    font-size: 2.2rem;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+    font-weight: 700;
+}
+
+/* 메뉴 선택 라인 컨테이너 */
+.nav-slider-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 0 50px; 
+}
+
+/* 슬라이드 이동 버튼 디자인 */
+.slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    background-color: transparent; 
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 0.4; 
+    transition: all 0.25s ease;
+}
+
+.slide-btn:hover {
+    opacity: 1; 
+    transform: translateY(-50%) scale(1.1); 
+}
+
+.slide-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: #1a1a1a; 
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.slide-btn.left { left: 5px; }
+.slide-btn.right { right: 5px; }
+
+/* 메뉴 스크롤 박스 (자석 스냅) */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0; 
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 0;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.nav-links::-webkit-scrollbar {
+    display: none;
+}
+
+.menu-item-group {
+    display: flex;
+    align-items: center;
+    scroll-snap-align: start; 
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 1rem; 
+    font-weight: 500;
+    padding: 0 22px; 
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+.nav-links a:hover {
+    color: #007bff;
+}
+
+.nav-links .divider {
+    color: #e2e8f0;
+    font-size: 0.8rem;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+/* 3. 우측 상단: 프로필 & 미니 메뉴판 */
+.header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    white-space: nowrap;
+}
+
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.profile-img {
+    width: 40px; 
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ddd;
+    object-fit: cover;
+    margin-bottom: 4px;
+}
+
+.profile-name {
+    font-size: 0.75rem;
+    color: #718096;
+    font-weight: bold;
+}
+
+.menu-box {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    width: 110px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.menu-box ul { list-style: none; }
+.menu-box li a {
+    display: block;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: #666;
+    font-size: 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid #f1f5f9;
+}
+.menu-box li:last-child a { border-bottom: none; }
+.menu-box li a:hover { background-color: #f8fafc; color: #007bff; }
+
+/* 메인 콘텐츠 영역 */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    text-align: center;
+    color: #888;
+}

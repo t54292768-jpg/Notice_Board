@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Link - 메인 허브</title>
+    <link rel="stylesheet" href="main_p.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-date" id="current-date"></div>
+
+        <div class="header-center">
+            <h1>House Link</h1>
+            
+            <div class="nav-slider-wrapper">
+                <button class="slide-btn left" id="slide-left">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                
+                <nav class="nav-links" id="nav-links">
+                    <div class="menu-item-group"><a href="#calendar">캘린더</a><span class="divider">•</span></div>
+                    <div class="menu-item-group"><a href="#diary">다이어리</a><span class="divider">•</span></div>
+                    <div class="menu-item-group"><a href="#travel">여행 기록</a><span class="divider">•</span></div>
+                    <div class="menu-item-group"><a href="#account">가계부</a><span class="divider">•</span></div>
+                    <div class="menu-item-group"><a href="#fridge">냉장고 관리</a><span class="divider">•</span></div>
+                    <div class="menu-item-group"><a href="#todo">To-Do List</a><span class="divider">•</span></div>
+                    <div class="menu-item-group"><a href="#monthly-goal">이달의 목표</a><span class="divider">•</span></div>
+                    <div class="menu-item-group"><a href="#yearly-goal">올해의 목표</a><span class="divider">•</span></div>
+                    <div class="menu-item-group" style="scroll-snap-align: end;"><a href="#bucket" style="padding-right:0;">개인 버킷리스트</a></div>
+                </nav>
+                
+                <button class="slide-btn right" id="slide-right">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="profile-section">
+                <img class="profile-img" src="https://via.placeholder.com/40" alt="프로필 사진">
+                <span class="profile-name">홍길동 님</span>
+            </div>
+            <div class="menu-box">
+                <ul>
+                    <li><a href="#my-profile">내 정보 수정</a></li>
+                    <li><a href="#settings">설정</a></li>
+                    <li><a href="#logout" style="color: #e53e3e;">로그아웃</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <p></p>
+    </main>
+
+    <script>
+        // 1. 날짜 노출 스크립트
+        const dateElement = document.getElementById('current-date');
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const weekMap = ['일', '월', '화', '수', '목', '금', '토'];
+        dateElement.innerText = `${year}.${month}.${day} (${weekMap[today.getDay()]})`;
+
+        // 2. 슬라이드 스냅 이동 스크립트
+        const navLinks = document.getElementById('nav-links');
+        const btnLeft = document.getElementById('slide-left');
+        const btnRight = document.getElementById('slide-right');
+
+        btnRight.addEventListener('click', () => {
+            const itemWidth = document.querySelector('.menu-item-group').offsetWidth;
+            navLinks.scrollLeft += itemWidth;
+        });
+
+        btnLeft.addEventListener('click', () => {
+            const itemWidth = document.querySelector('.menu-item-group').offsetWidth;
+            navLinks.scrollLeft -= itemWidth;
+        });
+    </script>
+</body>
+</html>

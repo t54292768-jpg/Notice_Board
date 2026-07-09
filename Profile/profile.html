@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Link - 프로필 설정</title>
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-date" id="current-date"></div>
+
+        <!-- <div class="header-center">
+            <a href="/Main/main_p.html" style="text-decoration: none; color: inherit;"><h1>House Link</h1></a>
+            <div class="nav-slider-wrapper">
+                <nav class="nav-links" style="justify-content: center; pointer-events: none; opacity: 0.5;">
+                    <div class="menu-item-group"><a href="#">프로필 설정 모드</a></div>
+                </nav>
+            </div>
+        </div> -->
+
+        <div class="header-right">
+            <div class="profile-section">
+                <img class="profile-img" id="header-avatar" src="https://via.placeholder.com/46" alt="프로필 사진">
+                <span class="profile-name" id="header-name">홍길동 님</span>
+            </div>
+        </div>
+    </header>
+
+    <main style="padding: 20px;">
+        <div class="profile-container">
+            <h2 class="profile-page-title">내 프로필 설정</h2>
+            
+            <div class="profile-upload-section">
+                <div class="profile-preview-box">
+                    <img class="profile-preview-img" id="profile-preview" src="https://via.placeholder.com/110" alt="미리보기">
+                    <label for="hidden-file-input" class="file-upload-label">
+                        <svg viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm12 10a4 4 0 1 0-8 0 4 4 0 0 0 8 0z"/></svg>
+                    </label>
+                    <input type="file" id="hidden-file-input" accept="image/*">
+                </div>
+                <p style="font-size: 0.75rem; color: #a0aec0;">카메라 버튼을 눌러 새 프로필 사진을 선택하세요</p>
+            </div>
+
+            <div class="profile-form-group">
+                <label for="user-name-input">이름 변경</label>
+                <input type="text" id="user-name-input" value="홍길동">
+            </div>
+
+            <div class="profile-form-group">
+                <label for="user-info-input">소개/정보 변경</label>
+                <textarea id="user-info-input" placeholder="가족에게 남길 한마디나 내 상태 정보를 입력하세요.">우리 집 화이팅!</textarea>
+            </div>
+
+            <div class="profile-btn-wrap">
+                <button class="save-info-btn" id="save-profile-btn">변경사항 저장하기</button>
+                <a href="/Main/main_p.html" class="back-home-btn">메인 화면으로 돌아가기</a>
+                
+                <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                
+                <button class="logout-action-btn" id="logout-btn">계정 로그아웃</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 상단 바 오늘 날짜 실시간 출력
+        const dateElement = document.getElementById('current-date');
+        const today = new Date();
+        const weekMap = ['일', '월', '화', '수', '목', '금', '토'];
+        dateElement.innerText = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')} (${weekMap[today.getDay()]})`;
+
+        // 이미지 파일 업로드 시 즉시 화면에 미리보기 기능
+        const fileInput = document.getElementById('hidden-file-input');
+        const profilePreview = document.getElementById('profile-preview');
+        const headerAvatar = document.getElementById('header-avatar');
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilePreview.src = e.target.result;
+                    headerAvatar.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 변경사항 저장 액션
+        const nameInput = document.getElementById('user-name-input');
+        const headerName = document.getElementById('header-name');
+        
+        document.getElementById('save-profile-btn').addEventListener('click', () => {
+            const updatedName = nameInput.value.trim();
+            if(updatedName === "") {
+                alert("이름은 한 글자 이상 입력해야 합니다.");
+                return;
+            }
+            headerName.innerText = `${updatedName} 님`;
+            alert("⚙️ 프로필 정보가 성공적으로 변경되었습니다!");
+        });
+
+        // 로그아웃 액션
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            const confirmLogout = confirm("정말 로그아웃 하시겠습니까?");
+            if (confirmLogout) {
+                alert("안전하게 로그아웃 되었습니다. 로그인 페이지로 이동합니다.");
+                window.location.href = "index.html"; 
+            }
+        });
+    </script>
+</body>
+</html>

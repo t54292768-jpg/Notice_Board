@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House Link - 메인 허브</title>
+    <title>House Link - 캘린더 & 듀얼 To-Do 대시보드</title>
     <link rel="stylesheet" href="main_p.css">
 </head>
 <body>
@@ -13,55 +13,103 @@
 
         <div class="header-center">
             <h1>House Link</h1>
-            
             <div class="nav-slider-wrapper">
                 <button class="slide-btn left" id="slide-left">
-                    <svg viewBox="0 0 24 24">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
+                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 </button>
-                
                 <nav class="nav-links" id="nav-links">
-                    <div class="menu-item-group"><a href="#calendar">캘린더</a><span class="divider">•</span></div>
-                    <div class="menu-item-group"><a href="#diary">다이어리</a><span class="divider">•</span></div>
-                    <div class="menu-item-group"><a href="#travel">여행 기록</a><span class="divider">•</span></div>
-                    <div class="menu-item-group"><a href="#account">가계부</a><span class="divider">•</span></div>
-                    <div class="menu-item-group"><a href="#fridge">냉장고 관리</a><span class="divider">•</span></div>
-                    <div class="menu-item-group"><a href="#todo">To-Do List</a><span class="divider">•</span></div>
-                    <div class="menu-item-group"><a href="#monthly-goal">이달의 목표</a><span class="divider">•</span></div>
-                    <div class="menu-item-group"><a href="#yearly-goal">올해의 목표</a><span class="divider">•</span></div>
-                    <div class="menu-item-group" style="scroll-snap-align: end;"><a href="#bucket" style="padding-right:0;">개인 버킷리스트</a></div>
+                    <div class="menu-item-group"><a href="#calendar">캘린더</a></div>
+                    <div class="menu-item-group"><a href="#diary">다이어리</a></div>
+                    <div class="menu-item-group"><a href="#travel">여행 기록</a></div>
+                    <div class="menu-item-group"><a href="#account">가계부</a></div>
+                    <div class="menu-item-group"><a href="#fridge">냉장고 관리</a></div>
+                    <div class="menu-item-group"><a href="#todo">To-Do List</a></div>
+                    <div class="menu-item-group"><a href="#monthly-goal">이달의 목표</a></div>
+                    <div class="menu-item-group"><a href="#yearly-goal">올해의 목표</a></div>
+                    <div class="menu-item-group" style="scroll-snap-align: end;"><a href="#bucket">개인 버킷리스트</a></div>
                 </nav>
-                
                 <button class="slide-btn right" id="slide-right">
-                    <svg viewBox="0 0 24 24">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
+                    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </button>
             </div>
         </div>
 
         <div class="header-right">
-            <div class="profile-section">
-                <img class="profile-img" src="https://via.placeholder.com/40" alt="프로필 사진">
-                <span class="profile-name">홍길동 님</span>
-            </div>
-            <div class="menu-box">
-                <ul>
-                    <li><a href="#my-profile">내 정보 수정</a></li>
-                    <li><a href="#settings">설정</a></li>
-                    <li><a href="#logout" style="color: #e53e3e;">로그아웃</a></li>
-                </ul>
-            </div>
+            <a href="/Profile/profile.html" class="profile-link-wrapper" title="프로필 설정으로 이동">
+                <div class="profile-section">
+                    <img class="profile-img" src="https://via.placeholder.com/46" alt="프로필 사진">
+                    <span class="profile-name">홍길동 님</span>
+                </div>
+            </a>
         </div>
     </header>
 
-    <main class="container">
-        <p></p>
-    </main>
+    <main class="dashboard-container">
+        
+        <section class="main-content">
+            <div class="calendar-wrapper">
+                <div class="calendar-header">
+                    <h3 id="calendar-title">2026년 07월</h3>
+                    <div class="calendar-btn-group">
+                        <button class="cal-btn" id="btn-prev">이전달</button>
+                        <button class="cal-btn" id="btn-today">오늘</button>
+                        <button class="cal-btn" id="btn-next">다음달</button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendar-grid">
+                    <div class="day-of-week">일</div>
+                    <div class="day-of-week">월</div>
+                    <div class="day-of-week">화</div>
+                    <div class="day-of-week">수</div>
+                    <div class="day-of-week">목</div>
+                    <div class="day-of-week">금</div>
+                    <div class="day-of-week">토</div>
+                </div>
+            </div>
+        </section>
+    
+    <aside class="side-content">
+            
+        <div class="todo-section personal-todo">
+            <h3>👤 나의 할 일</h3>
+            <div class="todo-input-box">
+                <input type="text" id="p-todo-input" placeholder="나만의 할 일 입력...">
+                <button class="todo-add-btn" id="p-todo-add-btn">추가</button>
+            </div>
+            <ul class="todo-list" id="p-todo-list">
+                <li class="todo-item">
+                    <input type="checkbox" id="p-todo-1">
+                    <label for="p-todo-1">개인 일기 쓰기</label>
+                    <button class="todo-delete-btn">×</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="todo-section family-todo">
+            <h3>🏠 가족 공유 할 일</h3>
+            <div class="todo-input-box">
+                <input type="text" id="f-todo-input" placeholder="가족 공동 할 일 입력...">
+                <button class="todo-add-btn" id="f-todo-add-btn">추가</button>
+            </div>
+            <ul class="todo-list" id="f-todo-list">
+                <li class="todo-item">
+                    <input type="checkbox" id="f-todo-1">
+                    <label for="f-todo-1">거실 화분 물 주기</label>
+                    <button class="todo-delete-btn">×</button>
+                </li>
+                <li class="todo-item">
+                    <input type="checkbox" id="f-todo-2">
+                    <label for="f-todo-2">주말 마트 장보기</label>
+                    <button class="todo-delete-btn">×</button>
+                </li>
+            </ul>
+        </div>
+
+    </aside>
+</main>
 
     <script>
-        // 1. 날짜 노출 스크립트
+        // [1] 상단바 당일 날짜 노출 기능
         const dateElement = document.getElementById('current-date');
         const today = new Date();
         const year = today.getFullYear();
@@ -70,20 +118,134 @@
         const weekMap = ['일', '월', '화', '수', '목', '금', '토'];
         dateElement.innerText = `${year}.${month}.${day} (${weekMap[today.getDay()]})`;
 
-        // 2. 슬라이드 스냅 이동 스크립트
+        // [2] 상단 메뉴 슬라이더 작동 기능
         const navLinks = document.getElementById('nav-links');
-        const btnLeft = document.getElementById('slide-left');
-        const btnRight = document.getElementById('slide-right');
-
-        btnRight.addEventListener('click', () => {
-            const itemWidth = document.querySelector('.menu-item-group').offsetWidth;
-            navLinks.scrollLeft += itemWidth;
+        document.getElementById('slide-right').addEventListener('click', () => {
+            navLinks.scrollLeft += document.querySelector('.menu-item-group').offsetWidth;
+        });
+        document.getElementById('slide-left').addEventListener('click', () => {
+            navLinks.scrollLeft -= document.querySelector('.menu-item-group').offsetWidth;
         });
 
-        btnLeft.addEventListener('click', () => {
-            const itemWidth = document.querySelector('.menu-item-group').offsetWidth;
-            navLinks.scrollLeft -= itemWidth;
-        });
+        // [3] 캘린더 동적 생성 로직
+        let currentYear = today.getFullYear();
+        let currentMonth = today.getMonth();
+        const calTitle = document.getElementById('calendar-title');
+        const calGrid = document.getElementById('calendar-grid');
+
+        function renderCalendar(year, month) {
+            const dayOfWeeks = document.querySelectorAll('.day-of-week');
+            calGrid.innerHTML = '';
+            dayOfWeeks.forEach(d => calGrid.appendChild(d));
+            calTitle.innerText = `${year}년 ${String(month + 1).padStart(2, '0')}월`;
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                const blankCell = document.createElement('div');
+                blankCell.classList.add('calendar-cell');
+                blankCell.style.backgroundColor = '#fcfcfc';
+                calGrid.appendChild(blankCell);
+            }
+            for (let dateNum = 1; dateNum <= lastDate; dateNum++) {
+                const cell = document.createElement('div');
+                cell.classList.add('calendar-cell');
+                if (year === today.getFullYear() && month === today.getMonth() && dateNum === today.getDate()) {
+                    cell.classList.add('today');
+                }
+                cell.innerHTML = `<span class="cell-num">${dateNum}</span>`;
+                if (dateNum === 15) cell.innerHTML += `<div class="event-bar">마트 장보기</div>`;
+                if (dateNum >= 23 && dateNum <= 25) cell.innerHTML += `<div class="event-bar travel">[여행] 부산 투어</div>`;
+                calGrid.appendChild(cell);
+            }
+        }
+        document.getElementById('btn-prev').addEventListener('click', () => { currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; } renderCalendar(currentYear, currentMonth); });
+        document.getElementById('btn-next').addEventListener('click', () => { currentMonth++; if (currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(currentYear, currentMonth); });
+        document.getElementById('btn-today').addEventListener('click', () => { currentYear = today.getFullYear(); currentMonth = today.getMonth(); renderCalendar(currentYear, currentMonth); });
+        renderCalendar(currentYear, currentMonth);
+
+
+        // 기존 [4] To-Do List 관련 스크립트 부분을 이 코드로 완전히 교체하세요.
+        let idCounter = 100;
+
+        // [핵심] 할 일을 새로 생성하여 추가하는 함수
+        function handleAddTodo(inputEl, listEl, prefix) {
+            const taskText = inputEl.value.trim();
+            if (taskText === "") return; // 빈 입력 방지
+        
+            const newId = `${prefix}-${idCounter++}`;
+
+            // 1. li 엘리먼트를 생성합니다.
+            const li = document.createElement('li');
+            li.classList.add('todo-item');
+
+            // 2. 내부 구조 주입 (★ 여기에 삭제 버튼 '×' 태그가 확실히 포함되어 있어야 합니다)
+            li.innerHTML = `
+                <input type="checkbox" id="${newId}">
+                <label for="${newId}">${taskText}</label>
+                <button class="todo-delete-btn">×</button>
+            `;
+
+            // 3. 부모 리스트에 조립된 li를 붙입니다.
+            listEl.appendChild(li);
+
+            // 4. 인풋창을 비워줍니다.
+            inputEl.value = "";
+
+            // 5. ★ 중요: 방금 '새로 만든' 이 리스트(li)에 삭제와 체크 이벤트를 즉시 심어줍니다.
+            bindTodoEvents(li);
+        }
+
+        // [핵심] 리스트 하나하나에 체크박스 및 삭제 버튼 기능을 부여하는 함수
+        function bindTodoEvents(todoItem) {
+            const checkbox = todoItem.querySelector('input[type="checkbox"]');
+            const deleteBtn = todoItem.querySelector('.todo-delete-btn');
+        
+            // 체크박스 클릭 시 완료선 토글
+            if (checkbox) {
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        todoItem.classList.add('completed');
+                    } else {
+                        todoItem.classList.remove('completed');
+                    }
+                });
+            }
+        
+            // ★ 삭제 버튼 클릭 시 나 자신(todoItem)을 화면에서 영구 삭제
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', () => {
+                    todoItem.remove(); 
+                });
+            }
+        }
+
+        // --- 개인 투두 이벤트 등록 ---
+        const pInput = document.getElementById('p-todo-input');
+        const pBtn = document.getElementById('p-todo-add-btn');
+        const pList = document.getElementById('p-todo-list');
+
+        if (pBtn && pInput) {
+            pBtn.addEventListener('click', () => handleAddTodo(pInput, pList, 'p'));
+            pInput.addEventListener('keypress', (e) => { 
+                if (e.key === 'Enter') handleAddTodo(pInput, pList, 'p'); 
+            });
+        }
+
+        // --- 가족 투두 이벤트 등록 ---
+        const fInput = document.getElementById('f-todo-input');
+        const fBtn = document.getElementById('f-todo-add-btn');
+        const fList = document.getElementById('f-todo-list');
+
+        if (fBtn && fInput) {
+            fBtn.addEventListener('click', () => handleAddTodo(fInput, fList, 'f'));
+            fInput.addEventListener('keypress', (e) => { 
+                if (e.key === 'Enter') handleAddTodo(fInput, fList, 'f'); 
+            });
+        }
+
+        // 처음 화면이 켜졌을 때 기본으로 박혀있던 가이드 투두 샘플들에도 이벤트 연동
+        document.querySelectorAll('.todo-item').forEach(item => bindTodoEvents(item));
     </script>
 </body>
 </html>

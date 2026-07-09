@@ -9,17 +9,24 @@
 body {
     background-color: #f8f9fa;
     color: #333;
+    padding-top: 115px; 
 }
 
-/* 헤더 전체 컨테이너: 좌우 날짜/프로필 여백 최소화 */
+/* 헤더 전체 컨테이너 */
 .main-header {
     display: grid;
-    grid-template-columns: 100px 1fr 100px; 
-    padding: 20px 30px;
+    grid-template-columns: 80px 1fr 80px; 
+    padding: 10px 20px; 
     background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     align-items: start;
-    gap: 5px;
+    gap: 15px;
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 /* 1. 좌측 상단: 날짜 */
@@ -27,22 +34,24 @@ body {
     font-size: 0.75rem;
     color: #a0aec0;
     font-weight: 400;
-    padding-top: 8px;
+    padding-top: 6px;
     white-space: nowrap;
 }
 
-/* 2. 중앙: 메뉴 라인 */
+/* 2. 중앙: 브랜드 & 메뉴 라인 */
 .header-center {
     text-align: center;
-    min-width: 0; 
+    width: 100%;
+    min-width: 0; /* grid 내부에서 스크롤이 터지도록 최소폭 해제 */
 }
 
 .header-center h1 {
-    font-size: 2.2rem;
+    font-size: 1.5rem;
     color: #1a1a1a;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     letter-spacing: -0.5px;
     font-weight: 700;
+    line-height: 1.2;
 }
 
 /* 메뉴 선택 라인 컨테이너 */
@@ -53,16 +62,16 @@ body {
     display: flex;
     align-items: center;
     position: relative;
-    padding: 0 50px; 
+    padding: 0 30px; 
 }
 
-/* 슬라이드 이동 버튼 디자인 */
+/* 슬라이드 이동 버튼 */
 .slide-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 36px;
-    height: 36px;
+    width: 24px;
+    height: 24px;
     background-color: transparent; 
     border: none;
     cursor: pointer;
@@ -80,8 +89,8 @@ body {
 }
 
 .slide-btn svg {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
     fill: none;
     stroke: #1a1a1a; 
     stroke-width: 2;
@@ -89,53 +98,68 @@ body {
     stroke-linejoin: round;
 }
 
-.slide-btn.left { left: 5px; }
-.slide-btn.right { right: 5px; }
+.slide-btn.left { left: 0px; }
+.slide-btn.right { right: 0px; }
 
-/* 메뉴 스크롤 박스 (자석 스냅) */
+/* 메뉴 스크롤 박스 */
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 0; 
     overflow-x: auto;
     white-space: nowrap;
-    padding: 10px 0;
+    padding: 4px 0;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    width: 100%; 
 }
 .nav-links::-webkit-scrollbar {
     display: none;
 }
 
+/* ★ 핵심 수정: 메뉴 아이템 그룹의 너비를 고정하여 절대 뭉개지지 않게 방어 */
 .menu-item-group {
     display: flex;
     align-items: center;
+    justify-content: center;
     scroll-snap-align: start; 
+    
+    /* 메뉴당 너비를 140px로 단단하게 고정합니다. (글자 길이에 맞춘 최적화) */
+    width: 140px; 
+    flex-shrink: 0; /* 절대 찌그러지지 마라 설정 */
 }
 
+/* ★ 메뉴 글자 링크 스타일 (중앙 정렬로 정돈) */
 .nav-links a {
     text-decoration: none;
     color: #4a5568;
-    font-size: 1rem; 
+    font-size: 0.95rem; 
     font-weight: 500;
-    padding: 0 22px; 
+    text-align: center;
     transition: color 0.2s;
-    flex-shrink: 0;
+    display: block;
+    width: 100%;
+    white-space: nowrap; /* 글자가 아랫줄로 떨어지는 것 방지 */
 }
 .nav-links a:hover {
     color: #007bff;
 }
 
-.nav-links .divider {
+/* 점(•) 구분선 스타일 변경: 아이템 오른쪽에 배치 */
+.menu-item-group::after {
+    content: '•';
     color: #e2e8f0;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    margin-left: auto; /* 오른쪽에 예쁘게 고정 */
     user-select: none;
-    flex-shrink: 0;
+}
+/* 마지막 메뉴 뒤의 점은 제거 */
+.menu-item-group:last-child::after {
+    content: '';
 }
 
-/* 3. 우측 상단: 프로필 & 미니 메뉴판 */
+/* 3. 우측 영역: 프로필 */
 .header-right {
     display: flex;
     flex-direction: column;
@@ -147,51 +171,502 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 8px;
+    padding-top: 2px; 
 }
 
 .profile-img {
-    width: 40px; 
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     background-color: #ddd;
     object-fit: cover;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .profile-name {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #718096;
     font-weight: bold;
 }
 
-.menu-box {
+/* 메인 콘텐츠 영역 */
+/* 기존 상단 코드들은 그대로 유지하고, 맨 아래 .container 관련 부분만 아래 코드로 교체/추가하세요 */
+
+/* 메인 대시보드 레이아웃 설정 */
+.dashboard-container {
+    max-width: 100%; /* 화면 양끝을 시원하게 다 쓰도록 설정 */
+    margin: 0 auto;
+    padding: 20px 30px;
+    
+    /* ★ 핵심: 좌측 4/5(80%), 우측 1/5(20%) 비율 분할 */
+    display: grid;
+    grid-template-columns: 4fr 1fr; 
+    gap: 20px; /* 좌우 판판이 사이의 간격 */
+}
+
+/* 왼쪽 4/5 공간: 실제 기능 화면들이 렌더링될 구역 */
+.main-content {
+    background-color: #ffffff;
+    border-radius: 12px;
+    min-height: 70vh; /* 본문이 채워지기 전 최소 높이 확보 */
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    border: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+/* 오른쪽 1/5 공간: 일단 비워두는 공간 */
+.side-content {
+    background-color: transparent; /* 임시로 투명하게 처리 */
+    border: 2px dashed #cbd5e0; /* 영역 확인을 위해 흐린 점선 처리 (나중에 지우시면 됩니다) */
+    border-radius: 12px;
+    min-height: 70vh;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a0aec0;
+    font-size: 0.9rem;
+}
+
+/* --------------------------------------------------
+   캘린더(Calendar) 완벽 균등 가변 레이아웃 스타일
+-------------------------------------------------- */
+
+/* 캘린더 전체 감싸는 박스: 부모인 main-content의 높이를 꽉 채우도록 설정 */
+.calendar-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 캘린더 상단 (연도, 월, 이동 버튼) */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 5px;
+    flex-shrink: 0; /* 헤더는 높이가 줄어들지 않도록 방어 */
+}
+
+.calendar-header h3 {
+    font-size: 1.3rem;
+    color: #1a1a1a;
+    font-weight: 700;
+}
+
+.calendar-btn-group {
+    display: flex;
+    gap: 6px;
+}
+
+.cal-btn {
     background-color: #ffffff;
     border: 1px solid #e2e8f0;
+    padding: 5px 10px;
+    font-size: 0.8rem;
     border-radius: 6px;
-    width: 110px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    cursor: pointer;
+    color: #4a5568;
+    transition: all 0.2s;
+}
+
+.cal-btn:hover {
+    background-color: #007bff;
+    color: #ffffff;
+    border-color: #007bff;
+}
+
+/* ★ 핵심 수정: 달력 그리드 판 (화면 축소 시 유연하게 반응) */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 무조건 가로폭을 7등분으로 똑같이 쪼갬 */
+    border-top: 1px solid #e2e8f0;
+    border-left: 1px solid #e2e8f0;
+    flex-grow: 1; /* 남은 세로 공간을 캘린더가 꽉 채우도록 설정 */
+    width: 100%;
+}
+
+/* 요일 칸 & 날짜 칸 공통 */
+.calendar-grid > div {
+    border-right: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 6px;
+    min-width: 0; /* 중요: 내부 텍스트 때문에 칸이 늘어나는 현상 원천 차단 */
+}
+
+/* 요일 윗줄 스타일 */
+.day-of-week {
+    background-color: #f8fafc;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    text-align: center;
+    padding: 8px 0 !important;
+    flex-shrink: 0;
+}
+
+/* 일요일 빨간색, 토요일 파란색 유지 */
+.day-of-week:nth-child(1), .calendar-cell:nth-child(7n+1) .cell-num { color: #e53e3e; }
+.day-of-week:nth-child(7), .calendar-cell:nth-child(7n) .cell-num { color: #3182ce; }
+
+/* ★ 핵심 수정: 실제 날짜 칸 개별 스타일 */
+.calendar-cell {
+    /* 기존 고정 height 대신, 비율로 줄어들 수 있게 세팅 */
+    height: auto; 
+    aspect-ratio: 1.1 / 1; /* 가로세로 비율을 상시 일정하게 유지 (창 줄이면 세로도 같이 줄어듦) */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #ffffff;
+    transition: background-color 0.15s;
+    overflow: hidden; /* ★ 화면이 너무 줄어들어 일정이 넘치면 지저분하지 않게 숨김 처리 */
+}
+
+.calendar-cell:hover {
+    background-color: #f8fafc;
+}
+
+/* 오늘 날짜 표시 */
+.calendar-cell.today {
+    background-color: #eff6ff;
+}
+.calendar-cell.today .cell-num {
+    background-color: #007bff;
+    color: #ffffff !important;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 날짜 숫자 */
+.cell-num {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+}
+
+/* 일정 막대 스타일 (글자 뭉개짐 방지 및 생략 처리) */
+.event-bar {
+    width: 100%;
+    font-size: 0.7rem;
+    padding: 2px 4px;
+    background-color: #e0f2fe;
+    color: #0369a1;
+    border-left: 2px solid #0284c7;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    text-align: left;
+    
+    /* 칸이 줄어들 때 글자가 아랫줄로 밀려 뭉개지지 않게 방어 */
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis; /* 글자가 칸보다 길어지면 자동으로 ... 처리 */
+    flex-shrink: 0; 
 }
 
-.menu-box ul { list-style: none; }
-.menu-box li a {
-    display: block;
+/* 여행 일정 자동연동용 색상 */
+.event-bar.travel {
+    background-color: #dcfce7;
+    color: #15803d;
+    border-left: 2px solid #16a34a;
+}
+
+/* --------------------------------------------------
+   우측 To-Do List 전용 스타일
+-------------------------------------------------- */
+
+/* 기존 점선 테두리를 지우고 흰색 카드 배경으로 변경 */
+.side-content {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    min-height: 70vh;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    
+    /* 내부 요소를 위에서부터 정렬 */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+/* 투두 헤더 제목 */
+.todo-wrapper h3 {
+    font-size: 1.1rem;
+    color: #1a1a1a;
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 투두 입력창 박스 */
+.todo-input-box {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 15px;
+}
+
+.todo-input-box input {
+    flex-grow: 1;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.todo-input-box input:focus {
+    border-color: #007bff;
+}
+
+.todo-add-btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 0 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.todo-add-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 투두 리스트 정렬 */
+.todo-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 개별 투두 아이템 */
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     padding: 8px 10px;
-    text-decoration: none;
-    color: #666;
-    font-size: 0.75rem;
-    text-align: center;
-    border-bottom: 1px solid #f1f5f9;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #edf2f7;
+    font-size: 0.85rem;
+    color: #4a5568;
 }
-.menu-box li:last-child a { border-bottom: none; }
-.menu-box li a:hover { background-color: #f8fafc; color: #007bff; }
 
-/* 메인 콘텐츠 영역 */
-.container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-    text-align: center;
-    color: #888;
+.todo-item input[type="checkbox"] {
+    accent-color: #007bff; /* 체크박스 포인터 색상 */
+    cursor: pointer;
+}
+
+.todo-item label {
+    cursor: pointer;
+    flex-grow: 1;
+    transition: all 0.2s;
+}
+
+/* 체크 완료 시 스타일 변경 (흐려지며 취소선) */
+.todo-item.completed label {
+    text-decoration: line-through;
+    color: #a0aec0;
+}
+
+/* --------------------------------------------------
+   우측 To-Do List (개인 / 가족 이중 구조) 스타일
+-------------------------------------------------- */
+
+/* 우측 사이드바 컨테이너 내부 배치 조정 */
+.side-content {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    min-height: 70vh;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 25px; /* 개인 섹션과 가족 섹션 사이의 널찍한 여백 */
+}
+
+/* 각각의 투두 섹션 블록 */
+.todo-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* 투두 섹션 제목 스타일 */
+.todo-section h3 {
+    font-size: 1rem;
+    color: #1a1a1a;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 가족 투두 제목 색상을 다르게 포인트를 주고 싶다면 */
+.todo-section.family-todo h3 {
+    color: #2b6cb0; /* 조금 더 선명한 블루 톤 */
+}
+
+/* 투두 입력 영역 한 줄로 정렬 */
+.todo-input-box {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.todo-input-box input {
+    flex-grow: 1;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.todo-input-box input:focus {
+    border-color: #007bff;
+}
+
+/* 추가 버튼 디자인 */
+.todo-add-btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 0 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+
+.todo-add-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 가족 추가 버튼은 친근한 초록빛 톤으로 차별화 */
+.todo-section.family-todo .todo-add-btn {
+    background-color: #319795;
+}
+.todo-section.family-todo .todo-add-btn:hover {
+    background-color: #234e52;
+}
+
+/* 투두 스크롤 가능 리스트 */
+.todo-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 200px; /* 항목이 너무 많아지면 깔끔하게 내부 스크롤 작동 */
+    overflow-y: auto;
+}
+
+/* 개별 투두 아이템 형태 */
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #edf2f7;
+    font-size: 0.82rem;
+    color: #4a5568;
+    position: relative; /* 버튼 배치를 위해 추가 */
+}
+
+.todo-item input[type="checkbox"] {
+    accent-color: #007bff;
+    cursor: pointer;
+}
+
+/* 가족 투두용 체크박스 테마 변경 */
+.todo-section.family-todo .todo-item input[type="checkbox"] {
+    accent-color: #319795;
+}
+
+.todo-item label {
+    cursor: pointer;
+    flex-grow: 1;
+    white-space: normal;
+    word-break: break-all;
+}
+
+/* 완료 시 취소선 디자인 */
+.todo-item.completed label {
+    text-decoration: line-through;
+    color: #a0aec0;
+}
+/* style.css 맨 아래에 이어서 붙여넣거나 교체하세요 */
+
+/* 투두 아이템 내부 배치 수정 (글자는 왼쪽, 삭제 버튼은 오른쪽 끝) */
+
+
+/* ★ 새롭게 추가된 삭제 버튼 디자인 */
+.todo-delete-btn {
+    background: transparent;
+    border: none;
+    color: #a0aec0; /* 평소엔 연한 회색 */
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 2px 6px;
+    margin-left: auto; /* 무조건 오른쪽 끝으로 밀어내기 */
+    border-radius: 4px;
+    line-height: 1;
+    transition: all 0.2s;
+}
+
+/* 삭제 버튼에 마우스 올렸을 때 빨간색으로 경고 */
+.todo-delete-btn:hover {
+    color: #e53e3e;
+    background-color: #fff5f5;
+}
+/* style.css 파일 맨 아래에 이어서 붙여넣으세요 */
+
+/* --------------------------------------------------
+   상단 고정 헤더 프로필 링크 스타일
+-------------------------------------------------- */
+
+/* <a> 태그 기본 밑줄 및 색상 초기화 */
+.profile-link-wrapper {
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* 프로필 영역에 마우스를 올렸을 때(Hover) 연출 */
+.profile-link-wrapper:hover {
+    opacity: 0.85; /* 살짝 투명해지면서 */
+    transform: scale(1.03); /* 아주 미세하게 톡 튀어나오는 세련된 효과 */
+}
+
+/* 호버 시 이미지 테두리에 은은한 포인트를 주고 싶다면 */
+.profile-link-wrapper:hover .profile-img {
+    border-color: #007bff; /* 파란색 테두리로 강조 */
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
 }

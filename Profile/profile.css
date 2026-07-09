@@ -1,0 +1,160 @@
+/* --------------------------------------------------
+   프로필 설정 페이지(Profile Page) 전용 스타일
+-------------------------------------------------- */
+
+.profile-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.profile-page-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* [1] 프로필 사진 변경 구역 */
+.profile-upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.profile-preview-box {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin-bottom: 15px;
+}
+
+.profile-preview-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e2e8f0;
+    background-color: #f8fafc;
+}
+
+/* 카메라 버튼 */
+.file-upload-label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    background-color: #007bff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,123,255,0.3);
+    transition: background 0.2s;
+}
+.file-upload-label:hover { background-color: #0056b3; }
+.file-upload-label svg { width: 16px; height: 16px; fill: #ffffff; }
+
+#hidden-file-input { display: none; }
+
+/* [2] 정보 입력 폼 구역 */
+.profile-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.profile-form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.profile-form-group input, 
+.profile-form-group textarea {
+    width: 100%;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.profile-form-group input:focus,
+.profile-form-group textarea:focus {
+    border-color: #007bff;
+}
+
+.profile-form-group textarea {
+    resize: none;
+    height: 80px;
+}
+
+/* [3] 하단 버튼 구역 */
+.profile-btn-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.save-info-btn {
+    width: 100%;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.save-info-btn:hover { background-color: #0056b3; }
+
+/* 뒤로가기 버튼 */
+.back-home-btn {
+    width: 100%;
+    background-color: #ffffff;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.back-home-btn:hover { background-color: #f8fafc; }
+
+/* [4] 로그아웃 버튼 */
+.logout-action-btn {
+    width: 100%;
+    background-color: #fff5f5;
+    color: #e53e3e;
+    border: 1px solid #fed7d7;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 15px;
+}
+.logout-action-btn:hover {
+    background-color: #e53e3e;
+    color: #ffffff;
+    border-color: #e53e3e;
+}

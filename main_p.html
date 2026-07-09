@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Link - 메인</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* 헤더 전체 컨테이너 */
+        .main-header {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr; /* 좌(날짜), 중(로고/링크), 우(프로필) 비율 분할 */
+            padding: 20px 40px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            align-items: start;
+        }
+
+        /* 1. 좌측 상단: 날짜 */
+        .header-date {
+            font-size: 0.95rem;
+            color: #666;
+            font-weight: 500;
+            padding-top: 5px;
+        }
+
+        /* 2. 중앙: House Link & 하이퍼링크 */
+        .header-center {
+            text-align: center;
+        }
+
+        .header-center h1 {
+            font-size: 2rem;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* 링크 사이 간격 */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #007bff; /* 마우스 올렸을 때 색상 변경 */
+        }
+
+        /* 3. 우측 상단: 프로필 & 메뉴판 */
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* 우측 정렬 */
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd; /* 이미지 없을 때 임시 배경 */
+            object-fit: cover;
+            margin-bottom: 5px;
+        }
+
+        .profile-name {
+            font-size: 0.85rem;
+            color: #444;
+            font-weight: bold;
+        }
+
+        /* 메뉴판 스타일 */
+        .menu-box {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            width: 160px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .menu-box ul {
+            list-style: none;
+        }
+
+        .menu-box li a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #444;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+
+        .menu-box li:last-child a {
+            border-bottom: none;
+        }
+
+        .menu-box li a:hover {
+            background-color: #f1f3f5;
+            color: #007bff;
+        }
+
+        /* 메인 콘텐츠 영역 (추후 개발 공간) */
+        .container {
+            padding: 40px;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <!-- 좌측 날짜 -->
+        <div class="header-date" id="current-date">
+            2026년 07월 09일
+        </div>
+
+        <!-- 중앙 브랜드 및 네비게이션 -->
+        <div class="header-center">
+            <h1>House Link</h1>
+            <nav class="nav-links">
+                <a href="#schedule">일정</a>
+                <a href="#travel">여행</a>
+                <a href="#news">소식</a>
+            </nav>
+        </div>
+
+        <!-- 우측 프로필 및 메뉴판 -->
+        <div class="header-right">
+            <div class="profile-section">
+                <!-- 실제 프로필 이미지 경로가 있다면 src에 넣으시면 됩니다 -->
+                <img class="profile-img" src="https://via.placeholder.com/50" alt="프로필 사진">
+                <span class="profile-name">홍길동 님</span>
+            </div>
+            
+            <!-- 메뉴판 -->
+            <div class="menu-box">
+                <ul>
+                    <li><a href="#profile-edit">내 정보 수정</a></li>
+                    <li><a href="#settings">설정</a></li>
+                    <li><a href="#logout">로그아웃</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 구역 -->
+    <main class="container">
+        <p>여기에 선택한 메뉴(일정, 여행, 소식 등)의 메인 콘텐츠가 들어옵니다.</p>
+    </main>
+
+    <script>
+        // 현재 날짜를 자동으로 받아와서 넣어주는 간단한 스크립트
+        const dateElement = document.getElementById('current-date');
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        
+        // 요일 배열
+        const weekMap = ['일', '월', '화', '수', '목', '금', '토'];
+        const dayOfWeek = weekMap[today.getDay()];
+
+        dateElement.innerText = `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
+    </script>
+</body>
+</html>

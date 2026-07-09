@@ -5,7 +5,8 @@
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>로그인 - 게시판</title>
   <link rel="stylesheet" href="login_p.css">
-  
+  <!-- Tabler Icons를 불러오는 CDN 링크 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body>
   <form name="logfrm" action="login_ok.php" method="post" onsubmit="return handleLogin(this.form);">
@@ -15,16 +16,16 @@
         <i class="ti ti-layout-board"></i>
       </div>
       <div>
-        <div class="brand-name">커뮤니티 게시판</div>
+        <div class="brand-name">House Link</div>
         <div class="brand-sub">로그인하고 활동을 시작하세요</div>
       </div>
     </div>
 
-    <h2>로그인</h2>
+    <h2>Login</h2>
     <p class="subtitle">아이디와 비밀번호를 입력하세요.</p>
 
     <div class="field">
-      <label for="userid">아이디</label>
+      <label for="userid">ID</label>
       <div class="input-wrap">
         <i class="ti ti-user icon"></i>
         <input type="text" name="userid" id="userid" placeholder="아이디를 입력하세요" autocomplete="username">
@@ -32,11 +33,11 @@
     </div>
 
     <div class="field">
-      <label for="password">비밀번호</label>
+      <label for="password">Password</label>
       <div class="input-wrap">
         <i class="ti ti-lock icon"></i>
         <input type="password" name="pw" id="password" placeholder="비밀번호를 입력하세요" autocomplete="current-password">
-        <button class="eye-btn" onclick="togglePw()" aria-label="비밀번호 표시/숨기기">
+        <button type = "button" class = "eye-btn" onclick="togglePw()" aria-label="비밀번호 표시/숨기기">
           <i class="ti ti-eye" id="eye-icon"></i>
         </button>
       </div>
@@ -44,12 +45,12 @@
 
     <div class="row">
       <label class="remember">
-        <input type="checkbox"> 로그인 상태 유지
+        <input type="checkbox"> 자동 로그인
       </label>
       <button class="forgot">아이디 · 비밀번호 찾기</button>
     </div>
 
-    <button type="submit" class="btn-login">로그인</button>
+    <button type="submit" class="btn-login">Login</button>
 
     <div class="divider">
       <div class="divider-line"></div>
@@ -62,8 +63,8 @@
       Google로 계속하기
     </button>
     <button class="btn-sns">
-      <i class="ti ti-brand-github" aria-hidden="true"></i>
-      GitHub로 계속하기
+      <i class="ti ti-brand-kakaotalk" aria-hidden="true"></i>
+      Kakao로 계속하기
     </button>
 
     <div class="footer">
@@ -116,6 +117,26 @@
     
         frm.submit();
         return true;
+    }
+    function togglePw() {
+      // 1. 비밀번호 input 창과 눈 모양 아이콘 엘리먼트를 가져옵니다.
+      const pwInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eye-icon');
+
+      // 2. 현재 상태가 'password'인지 확인합니다.
+      if (pwInput.type === 'password') {
+        // 가려진 상태 -> 보여주기 상태로 변경
+        pwInput.type = 'text';
+
+        // 아이콘 모양을 눈 가린 모양(ti-eye-off)으로 변경 (Tabler Icons 기준)
+        eyeIcon.className = 'ti ti-eye-off'; 
+      } else {
+        // 보여지는 상태 -> 다시 가리기 상태로 변경
+        pwInput.type = 'password';
+
+        // 아이콘 모양을 원래 눈 모양(ti-eye)으로 변경
+        eyeIcon.className = 'ti ti-eye';
+      }
     }
   </script>
 </body>

@@ -1,0 +1,221 @@
+/* ==================================================
+   [todo.css] 메인 대시보드 계승형 2분할 투두리스트
+================================================== */
+body {
+    background-color: #f8fafc;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1e293b;
+}
+
+.todo-page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 상단 메인 컨트롤 타워 */
+.todo-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 10px 0;
+}
+
+.todo-welcome-title h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+}
+.todo-welcome-title p {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* --------------------------------------------------
+   [핵심] 내가 할 일 vs 가족과 할 일 좌우 메인 섹션 분할
+-------------------------------------------------- */
+.todo-split-grid {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+}
+
+.todo-section-card {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 24px rgba(15, 23, 42, 0.03);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 섹션 타이틀 테마 */
+.section-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f1f5f9;
+}
+.section-top-bar h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+.section-top-bar h3 span {
+    margin-right: 6px;
+}
+
+/* 퀵 할 일 입력창 (카드 내부 통합형으로 세련되게 배치) */
+.quick-input-box {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.quick-input-box input {
+    flex: 1;
+    padding: 11px 14px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 0.88rem;
+    outline: none;
+    background-color: #f8fafc;
+    transition: all 0.2s;
+}
+.quick-input-box input:focus {
+    border-color: #007bff;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+.btn-quick-add {
+    background-color: #0f172a;
+    color: #ffffff;
+    border: none;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-quick-add:hover {
+    background-color: #1e293b;
+}
+
+/* 리스트 정렬 뷰 */
+.todo-list-stream {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 개별 투두 카드 디자인 (메인 페이지 카드 형태 완벽 대치) */
+.todo-row-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+.todo-row-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+    border-color: #cbd5e1;
+}
+
+.todo-row-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+}
+
+/* 체크박스 모던 뷰 */
+.todo-custom-check {
+    width: 19px;
+    height: 19px;
+    border-radius: 50%; /* 둥근 아바타 형태로 체크박스 고급화 */
+    border: 2px solid #cbd5e1;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.todo-custom-check:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.todo-custom-check:checked::after {
+    content: '✓';
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.todo-row-text {
+    font-size: 0.92rem;
+    color: #334155;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 완료선 처리 */
+.todo-row-card.done-state {
+    background-color: #f8fafc;
+    border-color: #f1f5f9;
+}
+.todo-row-card.done-state .todo-row-text {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+/* 조작 영역 */
+.todo-row-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.item-badge {
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+.badge-me { background-color: #eff6ff; color: #1e40af; }
+.badge-family { background-color: #fdf2f8; color: #9d174d; }
+
+.btn-item-delete {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0.3;
+    transition: opacity 0.15s;
+}
+.btn-item-delete:hover {
+    opacity: 1;
+}
+
+/* 반응형 모바일 대응 */
+@media (max-width: 850px) {
+    .todo-split-grid {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Link - To-Do List</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="todo_list_p.css">
+    <script src="/todo-core.js"></script>
+    <script src="/JS/header-loader.js" defer></script>
+</head>
+<body>
+
+    <main class="calendar-page-wrapper todo-page-container">
+        
+        <header class="todo-page-header">
+            <div class="todo-welcome-title">
+                <h2>📋 To-Do List 대시보드</h2>
+                <p>오늘 내가 마쳐야 할 과제들과 가족들의 공동 약속 리스트입니다.</p>
+            </div>
+        </header>
+
+        <div class="todo-split-grid">
+            
+            <section class="todo-section-card">
+                <div class="section-top-bar">
+                    <h3><span>👤</span> 내가 할 일</h3>
+                </div>
+                
+                <div class="quick-input-box">
+                    <input type="text" id="input-me" placeholder="나의 새로운 미션을 추가해 보세요...">
+                    <button class="btn-quick-add" onclick="addNewTodo('me')">추가</button>
+                </div>
+
+                <div class="todo-list-stream" id="stream-me">
+                    </div>
+            </section>
+
+            <section class="todo-section-card">
+                <div class="section-top-bar">
+                    <h3><span>👨‍👩‍👧‍👦</span> 가족과 할 일</h3>
+                </div>
+
+                <div class="quick-input-box">
+                    <input type="text" id="input-family" placeholder="우리 가족 공통 미션을 추가해 보세요...">
+                    <button class="btn-quick-add" onclick="addNewTodo('family')">추가</button>
+                </div>
+
+                <div class="todo-list-stream" id="stream-family">
+                    </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <script>
+        window.addEventListener('load', function() {
+            // 헤더 네비게이션 'To-Do List' 파란색 활성화 강제 매칭
+            const links = document.querySelectorAll('.nav-links a');
+            links.forEach(link => {
+                if(link.getAttribute('href') === '#todo' || link.innerText.includes('To-Do')) {
+                    link.style.color = '#007bff';
+                    link.style.fontWeight = '700';
+                    link.setAttribute('href', '/todo.html');
+                }
+            });
+
+            // 초기 데모 데이터 디스플레이 렌더링
+            initDemoData();
+        });
+
+        function initDemoData() {
+            const streamMe = document.getElementById('stream-me');
+            const streamFamily = document.getElementById('stream-family');
+
+            // [내가 할 일 초기 배치]
+            streamMe.innerHTML = `
+                <div class="todo-row-card">
+                    <div class="todo-row-left">
+                        <input type="checkbox" class="todo-custom-check" onchange="toggleCardState(this)">
+                        <span class="todo-row-text">자동차 에어컨 필터 셀프 교체하기</span>
+                    </div>
+                    <div class="todo-row-right">
+                        <span class="item-badge badge-me">개인</span>
+                        <button class="btn-item-delete">🗑️</button>
+                    </div>
+                </div>
+                <div class="todo-row-card done-state">
+                    <div class="todo-row-left">
+                        <input type="checkbox" class="todo-custom-check" checked onchange="toggleCardState(this)">
+                        <span class="todo-row-text">7월 정기 지출 통장 잔액 확인</span>
+                    </div>
+                    <div class="todo-row-right">
+                        <span class="item-badge badge-me">개인</span>
+                        <button class="btn-item-delete">🗑️</button>
+                    </div>
+                </div>
+            `;
+
+            // [가족과 할 일 초기 배치]
+            streamFamily.innerHTML = `
+                <div class="todo-row-card">
+                    <div class="todo-row-left">
+                        <input type="checkbox" class="todo-custom-check" onchange="toggleCardState(this)">
+                        <span class="todo-row-text">주말 마트에서 삼겹살이랑 여름 수박 장보기</span>
+                    </div>
+                    <div class="todo-row-right">
+                        <span class="item-badge badge-family">가족공동</span>
+                        <button class="btn-item-delete">🗑️</button>
+                    </div>
+                </div>
+                <div class="todo-row-card">
+                    <div class="todo-row-left">
+                        <input type="checkbox" class="todo-custom-check" onchange="toggleCardState(this)">
+                        <span class="todo-row-text">베란다 하수구 거름망 분리 세척 청소</span>
+                    </div>
+                    <div class="todo-row-right">
+                        <span class="item-badge badge-family">가족공동</span>
+                        <button class="btn-item-delete">🗑️</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 체크박스 클릭 시 스타일 클래스 토글 액션
+        function toggleCardState(checkbox) {
+            const card = checkbox.closest('.todo-row-card');
+            if(checkbox.checked) {
+                card.classList.add('done-state');
+            } else {
+                card.classList.remove('done-state');
+            }
+        }
+
+        // 간단한 퀵 추가 작동 테스트 함수
+        function addNewTodo(type) {
+            const inputElement = document.getElementById(`input-${type}`);
+            const streamElement = document.getElementById(`stream-${type}`);
+            const text = inputElement.value.trim();
+
+            if(text === "") {
+                alert("내용을 입력해 주세요!");
+                return;
+            }
+
+            const badgeClass = type === 'me' ? 'badge-me' : 'badge-family';
+            const badgeText = type === 'me' ? '개인' : '가족공동';
+
+            const newCardHtml = `
+                <div class="todo-row-card">
+                    <div class="todo-row-left">
+                        <input type="checkbox" class="todo-custom-check" onchange="toggleCardState(this)">
+                        <span class="todo-row-text">${text}</span>
+                    </div>
+                    <div class="todo-row-right">
+                        <span class="item-badge ${badgeClass}">${badgeText}</span>
+                        <button class="btn-item-delete" onclick="this.closest('.todo-row-card').remove()">🗑️</button>
+                    </div>
+                </div>
+            `;
+
+            streamElement.insertAdjacentHTML('afterbegin', newCardHtml);
+            inputElement.value = "";
+        }
+    </script>
+</body>
+</html>

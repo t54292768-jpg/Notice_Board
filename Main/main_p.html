@@ -31,295 +31,145 @@
             </div>
         </section>
     
-    <aside class="side-content">
-            
-        <div class="todo-section personal-todo">
-            <h3>👤 나의 할 일</h3>
-            <div class="todo-input-box">
-                <input type="text" id="p-todo-input" placeholder="나만의 할 일 입력...">
-                <button class="todo-add-btn" id="p-todo-add-btn">추가</button>
+        <aside class="side-content">
+                
+            <div class="todo-section personal-todo">
+                <h3>👤 나의 할 일</h3>
+                <div class="todo-input-box">
+                    <input type="text" id="p-todo-input" placeholder="나만의 할 일 입력...">
+                    <button class="todo-add-btn" id="p-todo-add-btn">추가</button>
+                </div>
+                <ul class="todo-list" id="p-todo-list"></ul>
             </div>
-            <ul class="todo-list" id="p-todo-list">
-                <li class="todo-item">
-                    <input type="checkbox" id="p-todo-1">
-                    <label for="p-todo-1">개인 일기 쓰기</label>
-                    <button class="todo-delete-btn">×</button>
-                </li>
-            </ul>
-        </div>
 
-        <div class="todo-section family-todo">
-            <h3>🏠 가족 공유 할 일</h3>
-            <div class="todo-input-box">
-                <input type="text" id="f-todo-input" placeholder="가족 공동 할 일 입력...">
-                <button class="todo-add-btn" id="f-todo-add-btn">추가</button>
+            <div class="todo-section family-todo">
+                <h3>🏠 가족 공유 할 일</h3>
+                <div class="todo-input-box">
+                    <input type="text" id="f-todo-input" placeholder="가족 공동 할 일 입력...">
+                    <button class="todo-add-btn" id="f-todo-add-btn">추가</button>
+                </div>
+                <ul class="todo-list" id="f-todo-list"></ul>
             </div>
-            <ul class="todo-list" id="f-todo-list">
-                <li class="todo-item">
-                    <input type="checkbox" id="f-todo-1">
-                    <label for="f-todo-1">거실 화분 물 주기</label>
-                    <button class="todo-delete-btn">×</button>
-                </li>
-                <li class="todo-item">
-                    <input type="checkbox" id="f-todo-2">
-                    <label for="f-todo-2">주말 마트 장보기</label>
-                    <button class="todo-delete-btn">×</button>
-                </li>
-            </ul>
-        </div>
 
-    </aside>
-</main>
-    <script src ="/header-loader.js" defer></script>
+        </aside>
+    </main>
+
+    <script src="/JS/todo-core.js"></script>
+    <script src="/JS/calendar.js"></script>
+    <script src="/JS/header-loader.js" defer></script>
+    <script src="/JS/calendar-core.js"></script>
     <script>
-        window.addEventListener('load', function() {
-            console.log("헤더 및 외부 js 파일들이 모두 적용된 후 최종 실행됩니다.");
-        // [1] 상단바 당일 날짜 노출 기능
-        const dateElement = document.getElementById('current-date');
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        const weekMap = ['일', '월', '화', '수', '목', '금', '토'];
-        dateElement.innerText = `${year}.${month}.${day} (${weekMap[today.getDay()]})`;
-
-        // [2] 상단 메뉴 슬라이더 작동 기능
-        const navLinks = document.getElementById('nav-links');
-        document.getElementById('slide-right').addEventListener('click', () => {
-            navLinks.scrollLeft += document.querySelector('.menu-item-group').offsetWidth;
-        });
-        document.getElementById('slide-left').addEventListener('click', () => {
-            navLinks.scrollLeft -= document.querySelector('.menu-item-group').offsetWidth;
+            document.addEventListener("DOMContentLoaded", function() {
+            // 1. 우측 투두리스트 최초 렌더링
+            renderMainDashboardTodos();
+                
+            // 2. 입력창 및 버튼 이벤트 리스너 등록
+            initTodoEvents();
         });
 
-        // // [3] 캘린더 동적 생성 로직
-        // let currentYear = today.getFullYear();
-        // let currentMonth = today.getMonth();
-        // const calTitle = document.getElementById('calendar-title');
-        // const calGrid = document.getElementById('calendar-grid');
+        function renderMainDashboardTodos() {
+            // 💡 todo-core.js의 함수를 그대로 호출하여 데이터 로드
+            const todos = getTodoData(); 
+        
+            // --- [1. 나의 할 일 미니 렌더링] ---
+            const pTodoList = document.getElementById('p-todo-list');
+            if (pTodoList) {
+                // 미완료 개인 할 일만 추출
+                const meTodos = todos.filter(t => t.type === 'me' && !t.checked);
 
-        // function renderCalendar(year, month) {
-        //     const dayOfWeeks = document.querySelectorAll('.day-of-week');
-        //     calGrid.innerHTML = '';
-        //     dayOfWeeks.forEach(d => calGrid.appendChild(d));
-        //     calTitle.innerText = `${year}년 ${String(month + 1).padStart(2, '0')}월`;
-        //     const firstDayIndex = new Date(year, month, 1).getDay();
-        //     const lastDate = new Date(year, month + 1, 0).getDate();
-
-        //     for (let i = 0; i < firstDayIndex; i++) {
-        //         const blankCell = document.createElement('div');
-        //         blankCell.classList.add('calendar-cell');
-        //         blankCell.style.backgroundColor = '#fcfcfc';
-        //         calGrid.appendChild(blankCell);
-        //     }
-        //     for (let dateNum = 1; dateNum <= lastDate; dateNum++) {
-        //         const cell = document.createElement('div');
-        //         cell.classList.add('calendar-cell');
-        //         if (year === today.getFullYear() && month === today.getMonth() && dateNum === today.getDate()) {
-        //             cell.classList.add('today');
-        //         }
-        //         cell.innerHTML = `<span class="cell-num">${dateNum}</span>`;
-        //         if (dateNum === 15) cell.innerHTML += `<div class="event-bar">마트 장보기</div>`;
-        //         if (dateNum >= 23 && dateNum <= 25) cell.innerHTML += `<div class="event-bar travel">[여행] 부산 투어</div>`;
-        //         calGrid.appendChild(cell);
-        //     }
-        // }
-        // document.getElementById('btn-prev').addEventListener('click', () => { currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; } renderCalendar(currentYear, currentMonth); });
-        // document.getElementById('btn-next').addEventListener('click', () => { currentMonth++; if (currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(currentYear, currentMonth); });
-        // document.getElementById('btn-today').addEventListener('click', () => { currentYear = today.getFullYear(); currentMonth = today.getMonth(); renderCalendar(currentYear, currentMonth); });
-        // renderCalendar(currentYear, currentMonth);
-        // [calendar.js] 메인 페이지 미니 달력 자동화 엔진
-        let currentDate = new Date(); // 오늘 날짜 기준 시작
-    
-        const monthTitle = document.getElementById('calendar-title');
-        const calendarGrid = document.getElementById('calendar-grid');
-    
-        function renderMainCalendar(date) {
-            const year = date.getFullYear();
-            const month = date.getMonth();
-        
-            // 1. 메인 페이지의 헤더 타이틀 갱신 (예: 2026년 07월)
-            if (monthTitle) {
-                monthTitle.innerText = `${year}년 ${String(month + 1).padStart(2, '0')}월`;
-            }
-        
-            if (!calendarGrid) return;
-        
-            // 2. 이번 달의 첫날 요일 및 총 일수 계산
-            const firstDayIndex = new Date(year, month, 1).getDay(); 
-            const lastDate = new Date(year, month + 1, 0).getDate(); 
-            const prevLastDate = new Date(year, month, 0).getDate(); 
-        
-            let htmlContent = '';
-        
-            // 요일 윗줄 (일~토) 우선 주입
-            const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
-            weekDays.forEach(day => {
-                htmlContent += `<div class="day-of-week">${day}</div>`;
-            });
-        
-            let dayCounter = 1;
-            let nextMonthCounter = 1;
-            let totalCells = 42; // 6주 고정 바둑판
-        
-            // 캘린더 날짜 칸 생성 루프
-            for (let i = 0; i < totalCells; i++) {
-                // 5주차로 달력이 깔끔하게 끝나고 다음 달 날짜만 남는 행은 과감히 생략해서 깔끔하게 처리
-                if (dayCounter > lastDate && i % 7 === 0 && nextMonthCounter > 7) {
-                    break;
-                }
-            
-                let cellClass = 'calendar-cell';
-                const weekDayIndex = i % 7;
-            
-                // [A] 지난달 날짜
-                if (i < firstDayIndex) {
-                    const prevDay = prevLastDate - (firstDayIndex - 1) + i;
-                    htmlContent += `
-                        <div class="${cellClass} other-month">
-                            <span class="cell-num">${prevDay}</span>
-                        </div>`;
-                } 
-                // [B] 이번달 날짜
-                else if (dayCounter <= lastDate) {
-                    const isToday = (year === new Date().getFullYear() && month === new Date().getMonth() && dayCounter === new Date().getDate());
-                    if (isToday) cellClass += ' today';
-                
-                    htmlContent += `
-                        <div class="${cellClass}">
-                            <span class="cell-num">${dayCounter}</span>`;
-                        
-                    // 🔥 메인 페이지용 간이 샘플 일정 뱃지 매칭
-                    if (month === 6 && dayCounter === 6) {
-                        htmlContent += `<div class="event-bar">🏡 가계부 정리</div>`;
-                    }
-                    if (month === 6 && dayCounter === 10) {
-                        htmlContent += `<div class="event-bar">🚀 캘린더 완성</div>`;
-                        htmlContent += `<div class="event-bar travel">🍷 가족 외식</div>`;
-                    }
-                
-                    htmlContent += `</div>`;
-                    dayCounter++;
-                } 
-                // [C] 다음달 날짜
-                else {
-                    htmlContent += `
-                        <div class="${cellClass} other-month">
-                            <span class="cell-num">${nextMonthCounter}</span>
-                        </div>`;
-                    nextMonthCounter++;
+                if (meTodos.length === 0) {
+                    pTodoList.innerHTML = `<li style="color:#a0aec0; font-size:0.8rem; text-align:center; padding:12px 0; list-style:none;">남은 개인 할 일이 없습니다! 🎉</li>`;
+                } else {
+                    // dataset-id에 고유 id 저장
+                    pTodoList.innerHTML = meTodos.map(item => `
+                        <li class="todo-item" data-id="${item.id}" style="display:flex; align-items:center; background:#f8fafc; padding:10px 12px; border-radius:8px; border:1px solid #edf2f7; font-size:0.85rem; color:#334155; margin-bottom:8px;">
+                            <input type="checkbox" id="p-todo-${item.id}" ${item.checked ? 'checked' : ''}>
+                            <label for="p-todo-${item.id}" style="flex:1; margin-left:8px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.text}</label>
+                            <button class="todo-delete-btn" style="background:none; border:none; color:#a0aec0; cursor:pointer; font-size:1.1rem; line-height:1;">×</button>
+                        </li>
+                    `).join('');
                 }
             }
         
-            calendarGrid.innerHTML = htmlContent;
-        }
-    
-        // --- 메인 페이지 버튼 이벤트 바인딩 ---
-        const prevBtn = document.getElementById('prev-month');
-        const nextBtn = document.getElementById('next-month');
-        const todayBtn = document.getElementById('today-btn');
-    
-        if (prevBtn) prevBtn.addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderMainCalendar(currentDate);
-        });
-    
-        if (nextBtn) nextBtn.addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderMainCalendar(currentDate);
-        });
-    
-        if (todayBtn) todayBtn.addEventListener('click', () => {
-            currentDate = new Date();
-            renderMainCalendar(currentDate);
-        });
-    
-        // 최초 1회 달력 켜기
-        renderMainCalendar(currentDate);
-    
+            // --- [2. 가족 공유 할 일 미니 렌더링] ---
+            const fTodoList = document.getElementById('f-list-todo') || document.getElementById('f-todo-list');
+            if (fTodoList) {
+                // 미완료 가족 할 일만 추출
+                const familyTodos = todos.filter(t => t.type === 'family' && !t.checked);
 
-        // 기존 [4] To-Do List 관련 스크립트 부분을 이 코드로 완전히 교체하세요.
-        let idCounter = 100;
-
-        // [핵심] 할 일을 새로 생성하여 추가하는 함수
-        function handleAddTodo(inputEl, listEl, prefix) {
-            const taskText = inputEl.value.trim();
-            if (taskText === "") return; // 빈 입력 방지
-        
-            const newId = `${prefix}-${idCounter++}`;
-
-            // 1. li 엘리먼트를 생성합니다.
-            const li = document.createElement('li');
-            li.classList.add('todo-item');
-
-            // 2. 내부 구조 주입 (★ 여기에 삭제 버튼 '×' 태그가 확실히 포함되어 있어야 합니다)
-            li.innerHTML = `
-                <input type="checkbox" id="${newId}">
-                <label for="${newId}">${taskText}</label>
-                <button class="todo-delete-btn">×</button>
-            `;
-
-            // 3. 부모 리스트에 조립된 li를 붙입니다.
-            listEl.appendChild(li);
-
-            // 4. 인풋창을 비워줍니다.
-            inputEl.value = "";
-
-            // 5. ★ 중요: 방금 '새로 만든' 이 리스트(li)에 삭제와 체크 이벤트를 즉시 심어줍니다.
-            bindTodoEvents(li);
+                if (familyTodos.length === 0) {
+                    fTodoList.innerHTML = `<li style="color:#a0aec0; font-size:0.8rem; text-align:center; padding:12px 0; list-style:none;">가족 공통 미션이 없습니다! 🙌</li>`;
+                } else {
+                    fTodoList.innerHTML = familyTodos.map(item => `
+                        <li class="todo-item" data-id="${item.id}" style="display:flex; align-items:center; background:#fdf2f8; padding:10px 12px; border-radius:8px; border:1px solid #fce7f3; font-size:0.85rem; color:#9d174d; margin-bottom:8px;">
+                            <input type="checkbox" id="f-todo-${item.id}" ${item.checked ? 'checked' : ''}>
+                            <label for="f-todo-${item.id}" style="flex:1; margin-left:8px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.text}</label>
+                            <button class="todo-delete-btn" style="background:none; border:none; color:#f472b6; cursor:pointer; font-size:1.1rem; line-height:1;">×</button>
+                        </li>
+                    `).join('');
+                }
+            }
         }
 
-        // [핵심] 리스트 하나하나에 체크박스 및 삭제 버튼 기능을 부여하는 함수
-        function bindTodoEvents(todoItem) {
-            const checkbox = todoItem.querySelector('input[type="checkbox"]');
-            const deleteBtn = todoItem.querySelector('.todo-delete-btn');
+        // 입력 버튼 및 클릭 핸들러 등록
+        function initTodoEvents() {
+            const pInput = document.getElementById('p-todo-input');
+            const pAddBtn = document.getElementById('p-todo-add-btn');
+            const fInput = document.getElementById('f-todo-input');
+            const fAddBtn = document.getElementById('f-todo-add-btn');
         
-            // 체크박스 클릭 시 완료선 토글
-            if (checkbox) {
-                checkbox.addEventListener('change', () => {
-                    if (checkbox.checked) {
-                        todoItem.classList.add('completed');
-                    } else {
-                        todoItem.classList.remove('completed');
+            // A. 나의 할 일 추가
+            if (pAddBtn && pInput) {
+                pAddBtn.addEventListener('click', () => {
+                    const text = pInput.value.trim();
+                    if (!text) return;
+                    addTodoItem(text, 'me'); // 💡 엔진 호출
+                    pInput.value = '';
+                    renderMainDashboardTodos(); // 다시 그리기
+                });
+                pInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') pAddBtn.click(); });
+            }
+        
+            // B. 가족 공유 할 일 추가
+            if (fAddBtn && fInput) {
+                fAddBtn.addEventListener('click', () => {
+                    const text = fInput.value.trim();
+                    if (!text) return;
+                    addTodoItem(text, 'family'); // 💡 엔진 호출
+                    fInput.value = '';
+                    renderMainDashboardTodos(); // 다시 그리기
+                });
+                fInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') fAddBtn.click(); });
+            }
+        
+            // C. 체크박스 토글 및 삭제 버튼 이벤트 위임 (id 기반 처리)
+            const sideContent = document.querySelector('.side-content');
+            if (sideContent) {
+                sideContent.addEventListener('click', function(e) {
+                    const target = e.target;
+                    const todoItem = target.closest('.todo-item');
+                    if (!todoItem) return;
+
+                    // HTML 엘리먼트에 심어둔 고유 ID 추출
+                    const todoId = todoItem.dataset.id;
+                
+                    // 1) 삭제 버튼 클릭 시
+                    if (target.classList.contains('todo-delete-btn')) {
+                        const label = todoItem.querySelector('label').innerText;
+                        if (confirm(`'${label}' 항목을 삭제하시겠습니까?`)) {
+                            deleteTodoItem(todoId); // 💡 엔진 호출
+                            renderMainDashboardTodos();
+                        }
+                    }
+
+                    // 2) 체크박스 클릭 시
+                    if (target.type === 'checkbox') {
+                        toggleTodoItem(todoId); // 💡 엔진 호출
+                        renderMainDashboardTodos();
                     }
                 });
             }
-        
-            // ★ 삭제 버튼 클릭 시 나 자신(todoItem)을 화면에서 영구 삭제
-            if (deleteBtn) {
-                deleteBtn.addEventListener('click', () => {
-                    todoItem.remove(); 
-                });
-            }
         }
-
-        // --- 개인 투두 이벤트 등록 ---
-        const pInput = document.getElementById('p-todo-input');
-        const pBtn = document.getElementById('p-todo-add-btn');
-        const pList = document.getElementById('p-todo-list');
-
-        if (pBtn && pInput) {
-            pBtn.addEventListener('click', () => handleAddTodo(pInput, pList, 'p'));
-            pInput.addEventListener('keypress', (e) => { 
-                if (e.key === 'Enter') handleAddTodo(pInput, pList, 'p'); 
-            });
-        }
-
-        // --- 가족 투두 이벤트 등록 ---
-        const fInput = document.getElementById('f-todo-input');
-        const fBtn = document.getElementById('f-todo-add-btn');
-        const fList = document.getElementById('f-todo-list');
-
-        if (fBtn && fInput) {
-            fBtn.addEventListener('click', () => handleAddTodo(fInput, fList, 'f'));
-            fInput.addEventListener('keypress', (e) => { 
-                if (e.key === 'Enter') handleAddTodo(fInput, fList, 'f'); 
-            });
-        }
-
-        // 처음 화면이 켜졌을 때 기본으로 박혀있던 가이드 투두 샘플들에도 이벤트 연동
-        document.querySelectorAll('.todo-item').forEach(item => bindTodoEvents(item));
-        });
     </script>
 </body>
 </html>

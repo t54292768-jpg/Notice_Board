@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="menu-item-group"><a href="#travel">여행 기록</a></div>
                     <div class="menu-item-group"><a href="#account">가계부</a></div>
                     <div class="menu-item-group"><a href="#fridge">냉장고 관리</a></div>
-                    <div class="menu-item-group"><a href="#todo">To-Do List</a></div>
+                    <div class="menu-item-group"><a href="/Todo_list/todo_list_p.html">To-Do List</a></div>
                     <div class="menu-item-group"><a href="#monthly-goal">이달의 목표</a></div>
                     <div class="menu-item-group"><a href="#yearly-goal">올해의 목표</a></div>
                     <div class="menu-item-group" style="scroll-snap-align: end;"><a href="#bucket">개인 버킷리스트</a></div>

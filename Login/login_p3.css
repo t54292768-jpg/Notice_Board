@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #f8f9fa;
+    background-color: #090d16;
     color: #333;
     overflow: hidden;
 }
@@ -20,111 +20,126 @@ body {
 }
 
 /* --------------------------------------------------
-   [왼쪽 4/5 비율] 브랜드 판넬 (우중충함 제로! 세련된 파스텔 오로라 테마)
+   [왼쪽 4.5/7 비율] 브랜드 판넬 (더 크게 확장 & 다이내믹 오로라 네온 테마)
 -------------------------------------------------- */
 .brand-panel {
-    flex: 4;
-    /* ★ 기존 어두운 네이비에서 화사하고 감각적인 트렌디 그라데이션으로 변경 */
-    background: linear-gradient(135deg, #e0f2fe 0%, #e0e7ff 50%, #f3e8ff 100%); 
+    flex: 4.5; /* ★ 왼쪽 영역을 조금 더 넓게 조정하여 안정감 극대화 */
+    /* 깊고 고급스러운 딥 퍼플 & 로얄 블루 무빙 그라데이션 */
+    background: linear-gradient(135deg, #0f1026 0%, #161b40 40%, #2a1b4e 100%); 
+    background-size: 200% 200%;
+    animation: auroraMovement 12s ease infinite; /* 배경이 살아 움직이는 애니메이션 효과 */
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 60px;
     position: relative;
+    overflow: hidden;
 }
 
-/* 배경에 은은하게 퍼지는 세련된 빛 방울 효과 추가 */
+/* 배경 네온 발광 아우라 효과 효과 */
 .brand-panel::before {
     content: '';
     position: absolute;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(56,189,248,0.2) 0%, transparent 70%);
-    top: 10%;
-    left: 10%;
-    filter: blur(40px);
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+    top: -10%;
+    right: -10%;
+    filter: blur(60px);
+}
+.brand-panel::after {
+    content: '';
+    position: absolute;
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, rgba(147, 51, 234, 0.12) 0%, transparent 70%);
+    bottom: -10%;
+    left: -10%;
+    filter: blur(50px);
 }
 
 .brand-welcome-box {
     width: 100%;
-    max-width: 650px; 
+    max-width: 700px; 
     text-align: left;
     position: relative;
-    z-index: 2;
+    z-index: 5;
 }
 
-/* 로고 아이콘: 세련된 다크 블루진 색상으로 포인트 */
+/* 로고 아이콘: 사이버네틱 민트 블루 컬러 적용 */
 .brand-logo-icon {
-    font-size: clamp(2rem, 5vw, 5.5rem); 
-    color: #0284c7;
+    font-size: clamp(2.5rem, 6vw, 6.5rem); 
+    color: #38bdf8;
     margin-bottom: 24px;
     display: inline-block;
+    filter: drop-shadow(0 0 15px rgba(56,189,248,0.3));
 }
 
-/* 메인 타이틀: 우아하고 깊이감 있는 딥블루 그레이 색상 */
+/* 메인 타이틀 (House Link): 압도적인 화이트 네온 */
 .brand-title {
-    font-size: clamp(2rem, 4.5vw, 5.5rem); 
+    font-size: clamp(2.5rem, 5.5vw, 6.5rem); 
     font-weight: 800;
-    color: #0f172a;
-    margin-bottom: 20px;
+    color: #ffffff;
+    margin-bottom: 24px;
     letter-spacing: -1.5px;
     line-height: 1.1;
 }
 
-/* 서브 설명 문구: 가독성 높은 모던 다크그레이 */
+/* 서브 설명 문구: 은은한 라벤더 그레이 */
 .brand-description {
-    font-size: clamp(0.95rem, 1.2vw, 1.4rem);
-    color: #475569;
+    font-size: clamp(1.05rem, 1.4vw, 1.6rem);
+    color: #cbd5e1;
     line-height: 1.6;
-    font-weight: 400;
+    font-weight: 300;
 }
 
 /* --------------------------------------------------
-   [오른쪽 비율 가변화] 로그인 입력창 영역 (같이 줄어드는 스케일)
+   [오른쪽 비율 가변화] 로그인 입력창 영역 (전체화면 시 광활하게 확장)
 -------------------------------------------------- */
 .login-form-panel {
     flex: 2.5;
-    min-width: 400px; /* 창이 많이 줄어들 때를 대비해 최소폭을 살짝 낮춤 */
+    min-width: 420px;
     background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 40px;
-    box-shadow: -5px 0 25px rgba(0,0,0,0.02);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
 }
 
 .login-form-card {
     width: 100%;
-    /* ★ 카드 자체의 최대 너비도 화면 가로폭에 맞춰 자연스럽게 신축성 있게 조절 */
-    max-width: clamp(320px, 25vw, 400px); 
+    /* ★ 화면 가로폭(vw)에 맞춰 로그인 카드 전체 너비가 시원하게 커지도록 clamp 상한선 대폭 개방 */
+    max-width: clamp(340px, 28vw, 550px); 
+    transition: all 0.2s ease;
 }
 
-/* ★ 대제목도 화면 크기에 따라 연동되어 줄어듭니다 */
+/* ★ 타이틀 제목: 큰 화면에서 엄청 시원하게 커짐 */
 .login-form-card h2 {
-    font-size: clamp(1.6rem, 2.2vw, 2.2rem); 
+    font-size: clamp(1.8rem, 2.6vw, 3.2rem); 
     font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 8px;
+    color: #0f172a;
+    margin-bottom: 10px;
 }
 
 .subtitle {
-    font-size: clamp(0.82rem, 0.95vw, 0.95rem);
-    color: #718096;
-    margin-bottom: 30px;
+    font-size: clamp(0.85rem, 1.1vw, 1.3rem);
+    color: #64748b;
+    margin-bottom: 35px;
 }
 
 /* 입력 필드 레이아웃 */
 .field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 18px;
+    gap: 8px;
+    margin-bottom: 22px;
 }
 
 .field label {
-    font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+    font-size: clamp(0.85rem, 1vw, 1.2rem);
     font-weight: 600;
-    color: #4a5568;
+    color: #334155;
 }
 
 .input-wrap {
@@ -133,89 +148,102 @@ body {
     align-items: center;
 }
 
+/* 내부 아이콘 크기도 화면 크기에 비례 */
 .input-wrap .icon {
     position: absolute;
-    left: 14px;
-    color: #a0aec0;
-    font-size: clamp(1.1rem, 1.3vw, 1.3rem);
+    left: 16px;
+    color: #94a3b8;
+    font-size: clamp(1.1rem, 1.4vw, 1.7rem);
 }
 
-/* ★ 핵심 수정: 입력창 박스의 두께와 글자 크기도 창 크기에 맞춰 쫀득하게 유동 변화 */
+/* ★ 핵심 개정: 아이디, 비밀번호 입력창의 크기와 상하 뚱뚱함이 화면 크기에 100% 동기화 */
 .input-wrap input {
     width: 100%;
-    padding: clamp(10px, 1.1vw, 13px) 14px clamp(10px, 1.1vw, 13px) clamp(38px, 3.5vw, 44px);
-    font-size: clamp(0.88rem, 1vw, 1rem); 
+    /* 패딩 여백 자체를 vw 단위를 섞어 화면 맞춤형으로 팽창시킵니다 */
+    padding: clamp(12px, 1.2vw, 20px) 16px clamp(12px, 1.2vw, 20px) clamp(44px, 4vw, 58px);
+    font-size: clamp(0.9rem, 1.1vw, 1.3rem); 
     border: 1px solid #cbd5e0;
-    border-radius: 8px;
+    border-radius: 10px;
     outline: none;
+    background-color: #f8fafc;
     transition: all 0.2s;
 }
 
 .input-wrap input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    border-color: #6366f1;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
 }
 
-/* 비밀번호 토글 버튼 */
+/* 비밀번호 토글 버튼 크기 가변화 */
 .eye-btn {
     position: absolute;
-    right: 14px;
+    right: 16px;
     background: transparent;
     border: none;
-    color: #a0aec0;
+    color: #94a3b8;
     cursor: pointer;
-    font-size: clamp(1.1rem, 1.3vw, 1.3rem);
+    font-size: clamp(1.1rem, 1.4vw, 1.7rem);
     display: flex;
     align-items: center;
 }
+.eye-btn:hover { color: #334155; }
 
 /* 옵션 로우 (자동 로그인 및 찾기) */
 .row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: clamp(0.8rem, 0.9vw, 0.9rem);
-    margin-bottom: 25px;
+    font-size: clamp(0.85rem, 1vw, 1.15rem);
+    margin-bottom: 30px;
 }
 
 .remember {
     display: flex;
     align-items: center;
-    gap: 6px;
-    color: #4a5568;
+    gap: 8px;
+    color: #475569;
     cursor: pointer;
+}
+.remember input[type="checkbox"] {
+    width: clamp(14px, 1.1vw, 18px);
+    height: clamp(14px, 1.1vw, 18px);
 }
 
 .forgot {
     background: transparent;
     border: none;
-    color: #718096;
+    color: #64748b;
     cursor: pointer;
-    font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+    font-size: clamp(0.85rem, 1vw, 1.15rem);
 }
-.forgot:hover { text-decoration: underline; color: #007bff; }
+.forgot:hover { text-decoration: underline; color: #6366f1; }
 
-/* ★ 로그인 버튼 크기 가변화 */
+/* ★ 로그인 대형 제출 버튼 가변 팽창 */
 .btn-login {
     width: 100%;
-    background-color: #007bff;
+    background-color: #4338ca; /* 세련된 딥 인디고 블루 */
     color: #ffffff;
     border: none;
-    padding: clamp(11px, 1.1vw, 14px);
-    border-radius: 8px;
-    font-size: clamp(0.9rem, 1.05rem, 1.05rem);
+    padding: clamp(13px, 1.3vw, 22px); /* 전체 화면 시 버튼이 엄청 듬직하게 커짐 */
+    border-radius: 10px;
+    font-size: clamp(0.95rem, 1.15vw, 1.4rem);
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
-    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(67, 56, 202, 0.2);
+    transition: all 0.2s;
+    margin-bottom: 30px;
 }
-.btn-login:hover { background-color: #0056b3; }
+.btn-login:hover { 
+    background-color: #3730a3; 
+    box-shadow: 0 6px 16px rgba(67, 56, 202, 0.3);
+}
 
 /* 소셜 구분선 */
 .divider {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .divider-line {
@@ -225,28 +253,28 @@ body {
 }
 
 .divider-text {
-    font-size: 0.75rem;
-    color: #a0aec0;
-    padding: 0 12px;
+    font-size: clamp(0.75rem, 0.9vw, 1rem);
+    color: #94a3b8;
+    padding: 0 14px;
     white-space: nowrap;
 }
 
-/* ★ 소셜 버튼 가변화 */
+/* ★ 소셜 로그인 버튼 가변 팽창 */
 .btn-sns {
     width: 100%;
     border: 1px solid #e2e8f0;
     background-color: #ffffff;
-    color: #4a5568;
-    padding: clamp(9px, 1vw, 12px);
-    border-radius: 8px;
-    font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+    color: #334155;
+    padding: clamp(11px, 1.1vw, 18px);
+    border-radius: 10px;
+    font-size: clamp(0.88rem, 1vw, 1.2rem);
     font-weight: 500;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 12px;
     transition: all 0.2s;
 }
 .btn-sns:hover { background-color: #f8fafc; }
@@ -256,20 +284,23 @@ body {
 /* 푸터 가이드 */
 .footer {
     text-align: center;
-    font-size: clamp(0.8rem, 0.9vw, 0.9rem);
-    color: #718096;
-    margin-top: 25px;
+    font-size: clamp(0.85rem, 1vw, 1.2rem);
+    color: #64748b;
+    margin-top: 30px;
 }
 
 .footer a {
-    color: #007bff;
+    color: #4338ca;
     text-decoration: none;
     font-weight: 600;
 }
+.footer a:hover { text-decoration: underline; }
 
-/* 초고해상도 보정 유지 */
-@media (min-width: 1920px) {
-    .brand-welcome-box { max-width: 800px; }
-    .brand-logo-icon, .brand-title { font-size: 6rem; }
-    .brand-description { font-size: 1.6rem; }
+/* --------------------------------------------------
+   배경 오로라 무빙 애니메이션 키프레임
+-------------------------------------------------- */
+@keyframes auroraMovement {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }

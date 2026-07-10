@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 - House Link</title>
+  <link rel="stylesheet" href="login_p3.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+  <div class="login-split-container">
+    
+    <div class="brand-panel">
+      <div class="brand-welcome-box">
+        <div class="brand-logo-icon">
+          <i class="ti ti-layout-board"></i>
+        </div>
+        <h1 class="brand-title">House Link</h1>
+        <p class="brand-description">우리 가족의 모든 기록과 일정을 한눈에 관리하는 서비스</p>
+      </div>
+    </div>
+
+    <div class="login-form-panel">
+      <form name="logfrm" action="login_ok.php" method="post" onsubmit="return handleLogin();" class="login-form-card">
+        
+        <h2>Login</h2>
+        <p class="subtitle">아이디와 비밀번호를 입력하세요.</p>
+
+        <div class="field">
+          <label for="userid">ID</label>
+          <div class="input-wrap">
+            <i class="ti ti-user icon"></i>
+            <input type="text" name="userid" id="userid" placeholder="아이디를 입력하세요" autocomplete="username">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <i class="ti ti-lock icon"></i>
+            <input type="password" name="pw" id="password" placeholder="비밀번호를 입력하세요" autocomplete="current-password">
+            <button type="button" class="eye-btn" onclick="togglePw()" aria-label="비밀번호 표시/숨기기">
+              <i class="ti ti-eye" id="eye-icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="remember">
+            <input type="checkbox"> 자동 로그인
+          </label>
+          <button type="button" class="forgot">아이디 · 비밀번호 찾기</button>
+        </div>
+
+        <button type="submit" class="btn-login">Login</button>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <span class="divider-text">소셜 계정 로그인</span>
+          <div class="divider-line"></div>
+        </div>
+
+        <button type="button" class="btn-sns google">
+          <i class="ti ti-brand-google" aria-hidden="true"></i>
+          Google로 계속하기
+        </button>
+        <button type="button" class="btn-sns kakao">
+          <i class="ti ti-brand-kakaotalk" aria-hidden="true"></i>
+          Kakao로 계속하기
+        </button>
+
+        <div class="footer">
+          아직 계정이 없으신가요? <a href="#">회원가입</a>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    // [1] 비밀번호 보기/숨기기 토글 기능 (중복 코드 정리 완료)
+    function togglePw() {
+      const pwInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eye-icon');
+
+      if (pwInput.type === 'password') {
+        pwInput.type = 'text';
+        eyeIcon.className = 'ti ti-eye-off'; 
+      } else {
+        pwInput.type = 'password';
+        eyeIcon.className = 'ti ti-eye';
+      }
+    }
+
+    // [2] 로그인 검증 및 Post 처리 기능 (onsubmit 연동 버그 교정 완료)
+    function handleLogin() {
+      var frm = document.logfrm;
+      var userid = frm.userid.value.trim();
+      var pw = frm.pw.value;
+      
+      if(userid === ''){
+        alert('아이디를 입력해 주세요');
+        frm.userid.focus();
+        return false;
+      }
+      if(pw === ''){
+        alert('비밀번호를 입력해 주세요');
+        frm.pw.focus();
+        return false;
+      }
+    
+      // 두 값이 정상 입력되면 이 시점에 true를 반환하여 form action(login_ok.php)으로 데이터를 토스합니다.
+      return true;
+    }
+  </script>
+</body>
+</html>

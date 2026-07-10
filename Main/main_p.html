@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="main_p.css">
 </head>
 <body>
-
-
     <main class="dashboard-container">
         
         <section class="main-content">
@@ -72,8 +70,10 @@
 
     </aside>
 </main>
-
+    <script src ="/header-loader.js" defer></script>
     <script>
+        window.addEventListener('load', function() {
+            console.log("헤더 및 외부 js 파일들이 모두 적용된 후 최종 실행됩니다.");
         // [1] 상단바 당일 날짜 노출 기능
         const dateElement = document.getElementById('current-date');
         const today = new Date();
@@ -92,43 +92,151 @@
             navLinks.scrollLeft -= document.querySelector('.menu-item-group').offsetWidth;
         });
 
-        // [3] 캘린더 동적 생성 로직
-        let currentYear = today.getFullYear();
-        let currentMonth = today.getMonth();
-        const calTitle = document.getElementById('calendar-title');
-        const calGrid = document.getElementById('calendar-grid');
+        // // [3] 캘린더 동적 생성 로직
+        // let currentYear = today.getFullYear();
+        // let currentMonth = today.getMonth();
+        // const calTitle = document.getElementById('calendar-title');
+        // const calGrid = document.getElementById('calendar-grid');
 
-        function renderCalendar(year, month) {
-            const dayOfWeeks = document.querySelectorAll('.day-of-week');
-            calGrid.innerHTML = '';
-            dayOfWeeks.forEach(d => calGrid.appendChild(d));
-            calTitle.innerText = `${year}년 ${String(month + 1).padStart(2, '0')}월`;
-            const firstDayIndex = new Date(year, month, 1).getDay();
-            const lastDate = new Date(year, month + 1, 0).getDate();
+        // function renderCalendar(year, month) {
+        //     const dayOfWeeks = document.querySelectorAll('.day-of-week');
+        //     calGrid.innerHTML = '';
+        //     dayOfWeeks.forEach(d => calGrid.appendChild(d));
+        //     calTitle.innerText = `${year}년 ${String(month + 1).padStart(2, '0')}월`;
+        //     const firstDayIndex = new Date(year, month, 1).getDay();
+        //     const lastDate = new Date(year, month + 1, 0).getDate();
 
-            for (let i = 0; i < firstDayIndex; i++) {
-                const blankCell = document.createElement('div');
-                blankCell.classList.add('calendar-cell');
-                blankCell.style.backgroundColor = '#fcfcfc';
-                calGrid.appendChild(blankCell);
+        //     for (let i = 0; i < firstDayIndex; i++) {
+        //         const blankCell = document.createElement('div');
+        //         blankCell.classList.add('calendar-cell');
+        //         blankCell.style.backgroundColor = '#fcfcfc';
+        //         calGrid.appendChild(blankCell);
+        //     }
+        //     for (let dateNum = 1; dateNum <= lastDate; dateNum++) {
+        //         const cell = document.createElement('div');
+        //         cell.classList.add('calendar-cell');
+        //         if (year === today.getFullYear() && month === today.getMonth() && dateNum === today.getDate()) {
+        //             cell.classList.add('today');
+        //         }
+        //         cell.innerHTML = `<span class="cell-num">${dateNum}</span>`;
+        //         if (dateNum === 15) cell.innerHTML += `<div class="event-bar">마트 장보기</div>`;
+        //         if (dateNum >= 23 && dateNum <= 25) cell.innerHTML += `<div class="event-bar travel">[여행] 부산 투어</div>`;
+        //         calGrid.appendChild(cell);
+        //     }
+        // }
+        // document.getElementById('btn-prev').addEventListener('click', () => { currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; } renderCalendar(currentYear, currentMonth); });
+        // document.getElementById('btn-next').addEventListener('click', () => { currentMonth++; if (currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(currentYear, currentMonth); });
+        // document.getElementById('btn-today').addEventListener('click', () => { currentYear = today.getFullYear(); currentMonth = today.getMonth(); renderCalendar(currentYear, currentMonth); });
+        // renderCalendar(currentYear, currentMonth);
+        // [calendar.js] 메인 페이지 미니 달력 자동화 엔진
+        let currentDate = new Date(); // 오늘 날짜 기준 시작
+    
+        const monthTitle = document.getElementById('calendar-title');
+        const calendarGrid = document.getElementById('calendar-grid');
+    
+        function renderMainCalendar(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth();
+        
+            // 1. 메인 페이지의 헤더 타이틀 갱신 (예: 2026년 07월)
+            if (monthTitle) {
+                monthTitle.innerText = `${year}년 ${String(month + 1).padStart(2, '0')}월`;
             }
-            for (let dateNum = 1; dateNum <= lastDate; dateNum++) {
-                const cell = document.createElement('div');
-                cell.classList.add('calendar-cell');
-                if (year === today.getFullYear() && month === today.getMonth() && dateNum === today.getDate()) {
-                    cell.classList.add('today');
+        
+            if (!calendarGrid) return;
+        
+            // 2. 이번 달의 첫날 요일 및 총 일수 계산
+            const firstDayIndex = new Date(year, month, 1).getDay(); 
+            const lastDate = new Date(year, month + 1, 0).getDate(); 
+            const prevLastDate = new Date(year, month, 0).getDate(); 
+        
+            let htmlContent = '';
+        
+            // 요일 윗줄 (일~토) 우선 주입
+            const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+            weekDays.forEach(day => {
+                htmlContent += `<div class="day-of-week">${day}</div>`;
+            });
+        
+            let dayCounter = 1;
+            let nextMonthCounter = 1;
+            let totalCells = 42; // 6주 고정 바둑판
+        
+            // 캘린더 날짜 칸 생성 루프
+            for (let i = 0; i < totalCells; i++) {
+                // 5주차로 달력이 깔끔하게 끝나고 다음 달 날짜만 남는 행은 과감히 생략해서 깔끔하게 처리
+                if (dayCounter > lastDate && i % 7 === 0 && nextMonthCounter > 7) {
+                    break;
                 }
-                cell.innerHTML = `<span class="cell-num">${dateNum}</span>`;
-                if (dateNum === 15) cell.innerHTML += `<div class="event-bar">마트 장보기</div>`;
-                if (dateNum >= 23 && dateNum <= 25) cell.innerHTML += `<div class="event-bar travel">[여행] 부산 투어</div>`;
-                calGrid.appendChild(cell);
+            
+                let cellClass = 'calendar-cell';
+                const weekDayIndex = i % 7;
+            
+                // [A] 지난달 날짜
+                if (i < firstDayIndex) {
+                    const prevDay = prevLastDate - (firstDayIndex - 1) + i;
+                    htmlContent += `
+                        <div class="${cellClass} other-month">
+                            <span class="cell-num">${prevDay}</span>
+                        </div>`;
+                } 
+                // [B] 이번달 날짜
+                else if (dayCounter <= lastDate) {
+                    const isToday = (year === new Date().getFullYear() && month === new Date().getMonth() && dayCounter === new Date().getDate());
+                    if (isToday) cellClass += ' today';
+                
+                    htmlContent += `
+                        <div class="${cellClass}">
+                            <span class="cell-num">${dayCounter}</span>`;
+                        
+                    // 🔥 메인 페이지용 간이 샘플 일정 뱃지 매칭
+                    if (month === 6 && dayCounter === 6) {
+                        htmlContent += `<div class="event-bar">🏡 가계부 정리</div>`;
+                    }
+                    if (month === 6 && dayCounter === 10) {
+                        htmlContent += `<div class="event-bar">🚀 캘린더 완성</div>`;
+                        htmlContent += `<div class="event-bar travel">🍷 가족 외식</div>`;
+                    }
+                
+                    htmlContent += `</div>`;
+                    dayCounter++;
+                } 
+                // [C] 다음달 날짜
+                else {
+                    htmlContent += `
+                        <div class="${cellClass} other-month">
+                            <span class="cell-num">${nextMonthCounter}</span>
+                        </div>`;
+                    nextMonthCounter++;
+                }
             }
+        
+            calendarGrid.innerHTML = htmlContent;
         }
-        document.getElementById('btn-prev').addEventListener('click', () => { currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; } renderCalendar(currentYear, currentMonth); });
-        document.getElementById('btn-next').addEventListener('click', () => { currentMonth++; if (currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(currentYear, currentMonth); });
-        document.getElementById('btn-today').addEventListener('click', () => { currentYear = today.getFullYear(); currentMonth = today.getMonth(); renderCalendar(currentYear, currentMonth); });
-        renderCalendar(currentYear, currentMonth);
-
+    
+        // --- 메인 페이지 버튼 이벤트 바인딩 ---
+        const prevBtn = document.getElementById('prev-month');
+        const nextBtn = document.getElementById('next-month');
+        const todayBtn = document.getElementById('today-btn');
+    
+        if (prevBtn) prevBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderMainCalendar(currentDate);
+        });
+    
+        if (nextBtn) nextBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderMainCalendar(currentDate);
+        });
+    
+        if (todayBtn) todayBtn.addEventListener('click', () => {
+            currentDate = new Date();
+            renderMainCalendar(currentDate);
+        });
+    
+        // 최초 1회 달력 켜기
+        renderMainCalendar(currentDate);
+    
 
         // 기존 [4] To-Do List 관련 스크립트 부분을 이 코드로 완전히 교체하세요.
         let idCounter = 100;
@@ -211,6 +319,7 @@
 
         // 처음 화면이 켜졌을 때 기본으로 박혀있던 가이드 투두 샘플들에도 이벤트 연동
         document.querySelectorAll('.todo-item').forEach(item => bindTodoEvents(item));
+        });
     </script>
 </body>
 </html>

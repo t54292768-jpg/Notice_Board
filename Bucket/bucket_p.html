@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Link - 개인 버킷리스트</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="bucket_p.css">
+
+    <script src="/JS/header-loader.js" defer></script>
+</head>
+<body>
+
+    <main class="bucket-page-container">
+        <section class="bucket-progress-board">
+            <div class="progress-info">
+                <h2>✨ 꿈을 향한 여정</h2>
+                <p>우리가 함께 혹은 나 혼자 이루어낼 소중한 버킷리스트입니다.</p>
+            </div>
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar-inner" id="bucket-progress-bar" style="width: 0%;"></div>
+                <span class="progress-text" id="bucket-progress-text">달성률 0%</span>
+            </div>
+        </section>
+
+        <section class="bucket-input-section">
+            <div class="bucket-input-box">
+                <input type="text" id="bucket-input" placeholder="이루고 싶은 새로운 꿈이나 목표를 입력하세요...">
+                <button class="bucket-add-btn" id="btn-add-bucket">추가하기</button>
+            </div>
+        </section>
+
+        <section class="bucket-list-section">
+            <ul class="bucket-list-group" id="bucket-list-box">
+                </ul>
+        </section>
+    </main>
+
+    <script src="/JS/bucket-core.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            const bucketInput = document.getElementById('bucket-input');
+            const addBtn = document.getElementById('btn-add-bucket');
+            const listBox = document.getElementById('bucket-list-box');
+            const progressBar = document.getElementById('bucket-progress-bar');
+            const progressText = document.getElementById('bucket-progress-text');
+
+            // 1. 화면 새로고침 및 게이지바 연동 함수
+            function renderBucketList() {
+                const items = getBucketData();
+
+                // 달성률 계산 로직
+                if (items.length === 0) {
+                    progressBar.style.width = "0%";
+                    progressText.innerText = "달성률 0% (꿈을 등록해 보세요!)";
+                    listBox.innerHTML = `<li class="empty-bucket">아직 채워진 꿈이 없습니다. 하고 싶은 일을 적어보세요! 🎈</li>`;
+                    return;
+                }
+
+                const completedCount = items.filter(item => item.checked).length;
+                const progressPercent = Math.round((completedCount / items.length) * 100);
+                
+                // 애니메이션 효과를 동반한 게이지 갱신
+                progressBar.style.width = `${progressPercent}%`;
+                progressText.innerText = `총 ${items.length}개 중 ${completedCount}개 달성! (${progressPercent}%)`;
+
+                // 리스트 출력
+                listBox.innerHTML = items.map(item => `
+                    <li class="bucket-item ${item.checked ? 'completed' : ''}" data-id="${item.id}">
+                        <div class="bucket-left">
+                            <input type="checkbox" id="bucket-chk-${item.id}" ${item.checked ? 'checked' : ''}>
+                            <label for="bucket-chk-${item.id}" class="bucket-text">${item.text}</label>
+                        </div>
+                        <button class="bucket-del-btn">×</button>
+                    </li>
+                `).join('');
+            }
+
+            // 2. 아이템 추가 버튼 이벤트
+            addBtn.addEventListener('click', function() {
+                const text = bucketInput.value.trim();
+                if(!text) return alert("목표 내용을 입력해 주세요!");
+
+                addBucketItem(text);
+                bucketInput.value = ""; // 창 비우기
+                renderBucketList();
+            });
+
+            // 엔터 키 지원
+            bucketInput.addEventListener('keypress', function(e) {
+                if(e.key === 'Enter') addBtn.click();
+            });
+
+            // 3. 리스트 클릭 위임 이벤트 (체크박스 토글 / 삭제)
+            listBox.addEventListener('click', function(e) {
+                const target = e.target;
+                const li = target.closest('.bucket-item');
+                if(!li) return;
+                const id = li.dataset.id;
+
+                // A. 체크박스 클릭 시
+                if(target.type === 'checkbox') {
+                    toggleBucketItem(id);
+                    renderBucketList();
+                }
+
+                // B. 삭제 버튼 클릭 시
+                if(target.classList.contains('bucket-del-btn')) {
+                    const text = li.querySelector('.bucket-text').innerText;
+                    if(confirm(`'${text}' 소망을 리스트에서 지우시겠습니까?`)) {
+                        deleteBucketItem(id);
+                        renderBucketList();
+                    }
+                }
+            });
+
+            // 최초 렌더링 실행
+            renderBucketList();
+        });
+    </script>
+</body>
+</html>

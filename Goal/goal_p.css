@@ -1,0 +1,209 @@
+/* goal.css */
+.goal-page-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.goal-header-zone {
+    margin-bottom: 30px;
+}
+
+.goal-header-zone h2 {
+    font-size: 1.8rem;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+}
+
+.goal-header-zone p {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* 3단 수평 대시보드 그리드 */
+.goal-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+/* 개별 목표 카드 상자 테마 */
+.goal-card-box {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #edf2f7;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.03);
+    min-height: 450px;
+}
+
+.card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.card-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.emoji-icon {
+    font-size: 1.2rem;
+}
+
+.card-head h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* 남은 개수 표시 배지 */
+.count-badge {
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+
+/* 📊 카드 내부 상단 프로그레스 미니 게이지 바 */
+.mini-progress-wrapper {
+    width: 100%;
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.mini-progress-bar {
+    height: 100%;
+    background: #3b82f6; /* 하우스링크 공식 블루 컬러 */
+    border-radius: 10px;
+    transition: width 0.3s ease-in-out;
+}
+
+/* 카드 인풋 인라인 셋 */
+.goal-input-wrapper {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.goal-input-wrapper input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.goal-input-wrapper input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+}
+
+.btn-add-goal {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.btn-add-goal:hover {
+    background: #2563eb;
+}
+
+/* 스크롤 피드 형태의 리스트 정렬 */
+.goal-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.goal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f8fafc;
+    border: 1px solid #edf2f7;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.goal-item-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+}
+
+.goal-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.goal-item label {
+    font-size: 0.88rem;
+    color: #334155;
+    cursor: pointer;
+    line-height: 1.4;
+    word-break: break-all;
+}
+
+/* 체크 달성 완료 시 투명화 및 취소선 피드백 */
+.goal-item.done {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+}
+
+.goal-item.done label {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+.btn-del-goal {
+    background: none;
+    border: none;
+    color: #cbd5e1;
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+    padding-left: 6px;
+}
+
+.btn-del-goal:hover {
+    color: #ef4444;
+}
+
+.empty-goal {
+    text-align: center;
+    color: #cbd5e1;
+    font-size: 0.82rem;
+    padding: 40px 0;
+}

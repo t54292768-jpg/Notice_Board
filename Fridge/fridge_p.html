@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Link - 냉장고 관리</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="fridge_p.css">
+
+    <script src="/JS/header-loader.js" defer></script>
+</head>
+<body>
+
+    <main class="fridge-page-container">
+        <header class="fridge-header-zone">
+            <h2>🧊 스마트 냉장고 관리</h2>
+            <p>보관 중인 식재료의 유통기한을 입력하면 남은 기간 순서대로 똑똑하게 정렬해 드립니다.</p>
+        </header>
+
+        <div class="fridge-split-layout">
+            
+            <section class="fridge-form-panel">
+                <h3>🛒 새로운 재료 넣기</h3>
+                <form id="fridge-form" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="item-name">식재료 명</label>
+                        <input type="text" id="item-name" placeholder="예: 시금치 한 단, 계란 30알" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item-expiry">유통기한 / 소비기한</label>
+                        <input type="date" id="item-expiry" required>
+                    </div>
+
+                    <button type="button" class="btn-submit-fridge" id="btn-save-item">🍎 냉장고에 추가하기</button>
+                </form>
+            </section>
+
+            <section class="fridge-list-panel">
+                <h3>🗓️ 유통기한 순 리스트 (신선도 순)</h3>
+                <div class="fridge-list-wrapper">
+                    <table class="fridge-table">
+                        <thead>
+                            <tr>
+                                <th>재료명</th>
+                                <th>유통기한</th>
+                                <th>남은 기한</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fridge-list-body">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="/JS/fridge-core.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            const form = document.getElementById('fridge-form');
+            const listBody = document.getElementById('fridge-list-body');
+            
+            // 오늘 날짜를 기본값으로 세팅
+            const todayStr = new Date().toISOString().split('T')[0];
+            document.getElementById('item-expiry').value = todayStr;
+
+            // 디데이(D-Day) 계산기 함수
+            function calculateDDay(expiryDateStr) {
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                const expiry = new Date(expiryDateStr);
+                expiry.setHours(0,0,0,0);
+
+                const diffTime = expiry - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                return diffDays;
+            }
+
+            // 냉장고 현황판 렌더링
+            function renderFridgeList() {
+                const items = getFridgeData(); // 이미 유통기한 순으로 정렬되어 옴
+
+                if (items.length === 0) {
+                    listBody.innerHTML = `<tr><td colspan="4" class="empty-fridge">냉장고가 텅 비었습니다. 신선한 재료를 채워보세요! 🥬</td></tr>`;
+                    return;
+                }
+
+                listBody.innerHTML = items.map(item => {
+                    const dDay = calculateDDay(item.expiry);
+                    let dDayClass = "badge-safe";
+                    let dDayText = `D-${dDay}`;
+
+                    if (dDay < 0) {
+                        dDayClass = "badge-expired";
+                        dDayText = `기간 만료 (D+${Math.abs(dDay)})`;
+                    } else if (dDay === 0) {
+                        dDayClass = "badge-warning";
+                        dDayText = "오늘까지! ⚠️";
+                    } else if (dDay <= 3) {
+                        dDayClass = "badge-warning"; // 3일 이내는 경고 노란/주황색
+                        dDayText = `D-${dDay} (임박)`;
+                    }
+
+                    return `
+                        <tr data-id="${item.id}">
+                            <td class="f-name">${item.name}</td>
+                            <td class="f-expiry">${item.expiry}</td>
+                            <td><span class="fridge-badge ${dDayClass}">${dDayText}</span></td>
+                            <td><button class="btn-del-item">먹음 / 폐기</button></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // 추가 버튼 클릭 이벤트
+            document.getElementById('btn-save-item').addEventListener('click', function() {
+                const name = document.getElementById('item-name').value.trim();
+                const expiry = document.getElementById('item-expiry').value;
+
+                if (!name || !expiry) {
+                    return alert("재료명과 유통기한을 모두 정확히 기재해 주세요!");
+                }
+
+                addFridgeItem(name, expiry);
+                
+                // 인풋창 초기화
+                document.getElementById('item-name').value = "";
+                document.getElementById('item-expiry').value = todayStr;
+
+                renderFridgeList(); // 리스트 갱신
+            });
+
+            // 삭제(먹음/폐기) 버튼 위임 이벤트
+            listBody.addEventListener('click', function(e) {
+                if (e.target.classList.contains('btn-del-item')) {
+                    const row = e.target.closest('tr');
+                    const id = row.dataset.id;
+                    const name = row.querySelector('.f-name').innerText;
+
+                    if (confirm(`'${name}' 재료를 냉장고에서 꺼내셨습니까?`)) {
+                        deleteFridgeItem(id);
+                        renderFridgeList();
+                    }
+                }
+            });
+
+            // 초기 구동
+            renderFridgeList();
+        });
+    </script>
+</body>
+</html>

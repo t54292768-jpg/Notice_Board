@@ -1,0 +1,232 @@
+/* travel.css */
+.travel-page-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.travel-header-zone {
+    margin-bottom: 30px;
+}
+
+.travel-header-zone h2 {
+    font-size: 1.8rem;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+}
+
+.travel-header-zone p {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* 2단 스plit 레이아웃 */
+.travel-split-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* 좌측 작성 폼 패널 */
+.travel-form-panel, .travel-feed-panel {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #edf2f7;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+}
+
+.travel-form-panel h3, .travel-feed-panel h3 {
+    margin: 0 0 20px 0;
+    font-size: 1.25rem;
+    color: #1e293b;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+.form-group input[type="text"], .form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    outline: none;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: none;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #3b82f6;
+}
+
+/* 이미지 업로드 & 프리뷰 박스 */
+.image-preview {
+    width: 100%;
+    height: 140px;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.btn-submit-travel {
+    width: 100%;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.btn-submit-travel:hover {
+    background: #2563eb;
+}
+
+/* 우측 피드 그리드 레이아웃 */
+.travel-grid-feed {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.empty-feed {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #94a3b8;
+    padding: 60px 0;
+    font-size: 0.95rem;
+}
+
+/* 여행 카드 컴포넌트 */
+.travel-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.travel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.card-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+.card-img-placeholder {
+    width: 100%;
+    height: 160px;
+    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+    color: #0369a1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.card-delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    background: rgba(15, 23, 42, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: background 0.2s;
+}
+
+.card-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.9);
+}
+
+.card-body {
+    padding: 16px;
+}
+
+.card-date {
+    display: block;
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.card-title {
+    margin: 0 0 6px 0;
+    font-size: 1.05rem;
+    color: #0f172a;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-loc {
+    display: inline-block;
+    font-size: 0.78rem;
+    color: #2563eb;
+    background: #eff6ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.card-summary {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #475569;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

@@ -1,0 +1,166 @@
+/* fridge.css */
+.fridge-page-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.fridge-header-zone {
+    margin-bottom: 30px;
+}
+
+.fridge-header-zone h2 {
+    font-size: 1.8rem;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+}
+
+.fridge-header-zone p {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* 2단 분할 그리드 */
+.fridge-split-layout {
+    display: grid;
+    grid-template-columns: 1fr 2.2fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.fridge-form-panel, .fridge-list-panel {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #edf2f7;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+}
+
+.fridge-form-panel h3, .fridge-list-panel h3 {
+    margin: 0 0 20px 0;
+    font-size: 1.2rem;
+    color: #1e293b;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #3b82f6;
+}
+
+.btn-submit-fridge {
+    width: 100%;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.btn-submit-fridge:hover {
+    background: #2563eb;
+}
+
+/* 우측 냉장고 리스트 테이블 */
+.fridge-list-wrapper {
+    overflow-x: auto;
+}
+
+.fridge-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.fridge-table th {
+    background: #f8fafc;
+    padding: 12px;
+    color: #475569;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.fridge-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.92rem;
+    color: #334155;
+}
+
+.f-name {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.f-expiry {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.empty-fridge {
+    text-align: center;
+    color: #94a3b8;
+    padding: 50px 0 !important;
+}
+
+/* 신선도 디데이 상태 배지 */
+.fridge-badge {
+    font-size: 0.78rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.badge-safe { background: #dcfce7; color: #16a34a; }      /* 안전 (4일 이상) */
+.badge-warning { background: #ffedd5; color: #ea580c; }   /* 임박 (0~3일) */
+.badge-expired { background: #fee2e2; color: #ef4444; }   /* 경과 (마이너스) */
+
+/* 꺼내기 관리 버튼 */
+.btn-del-item {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-del-item:hover {
+    background: #ef4444;
+    color: white;
+    border-color: #ef4444;
+}

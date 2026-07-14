@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Link - 비전 목표 대시보드</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="goal_p.css">
+
+    <!-- 고정 헤더 로더 -->
+    <script src="/JS/header-loader.js" defer></script>
+</head>
+<body>
+
+    <main class="goal-page-container">
+        <!-- 상단 타이틀 구역 -->
+        <header class="goal-header-zone">
+            <h2>🎯 하우스 비전 대시보드</h2>
+            <p>단계별 목표를 설정하고 관리하여 완벽하고 체계적인 2026년을 만들어 가세요.</p>
+        </header>
+
+        <!-- 3분할 목표 카드 그리드 레이아웃 -->
+        <div class="goal-grid-layout">
+            
+            <!-- 1. 이번주 목표 섹션 -->
+            <section class="goal-card-box weekly-box">
+                <div class="card-head">
+                    <div class="card-title-group">
+                        <span class="emoji-icon">🌱</span>
+                        <h3>이번주 목표</h3>
+                    </div>
+                    <span class="count-badge" id="weekly-count">0개 남음</span>
+                </div>
+                <!-- 📊 미니 달성률 바 추가 -->
+                <div class="mini-progress-wrapper">
+                    <div class="mini-progress-bar" id="weekly-progress" style="width: 0%;"></div>
+                </div>
+                <div class="goal-input-wrapper">
+                    <input type="text" id="weekly-input" placeholder="이번 주 새로운 다짐 추가...">
+                    <button class="btn-add-goal" data-type="weekly">＋</button>
+                </div>
+                <ul class="goal-list" id="weekly-list"></ul>
+            </section>
+
+            <!-- 2. 이달의 목표 섹션 -->
+            <section class="goal-card-box monthly-box">
+                <div class="card-head">
+                    <div class="card-title-group">
+                        <span class="emoji-icon">📅</span>
+                        <h3>이달의 목표</h3>
+                    </div>
+                    <span class="count-badge" id="monthly-count">0개 남음</span>
+                </div>
+                <!-- 📊 미니 달성률 바 추가 -->
+                <div class="mini-progress-wrapper">
+                    <div class="mini-progress-bar" id="monthly-progress" style="width: 0%;"></div>
+                </div>
+                <div class="goal-input-wrapper">
+                    <input type="text" id="monthly-input" placeholder="이번 달 핵심 목표 추가...">
+                    <button class="btn-add-goal" data-type="monthly">＋</button>
+                </div>
+                <ul class="goal-list" id="monthly-list"></ul>
+            </section>
+
+            <!-- 3. 이번년도 목표 섹션 -->
+            <section class="goal-card-box yearly-box">
+                <div class="card-head">
+                    <div class="card-title-group">
+                        <span class="emoji-icon">🏆</span>
+                        <h3>이번년도 목표</h3>
+                    </div>
+                    <span class="count-badge" id="yearly-count">0개 남음</span>
+                </div>
+                <!-- 📊 미니 달성률 바 추가 -->
+                <div class="mini-progress-wrapper">
+                    <div class="mini-progress-bar" id="yearly-progress" style="width: 0%;"></div>
+                </div>
+                <div class="goal-input-wrapper">
+                    <input type="text" id="yearly-input" placeholder="올해 이루고 싶은 대형 비전...">
+                    <button class="btn-add-goal" data-type="yearly">＋</button>
+                </div>
+                <ul class="goal-list" id="yearly-list"></ul>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- 코어 엔진 로드 -->
+    <script src="/JS/goal-core.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            
+            // 3개 구역 통합 및 게이지바 실시간 연동 렌더링 함수
+            function renderAllGoals() {
+                const allGoals = getGoalData();
+                const types = ['weekly', 'monthly', 'yearly'];
+
+                types.forEach(type => {
+                    const filtered = allGoals.filter(g => g.type === type);
+                    const listBox = document.getElementById(`${type}-list`);
+                    const countBadge = document.getElementById(`${type}-count`);
+                    const progressBar = document.getElementById(`${type}-progress`);
+
+                    // 1) 수량 배지 계산 및 애니메이션 바 연동
+                    if (filtered.length === 0) {
+                        countBadge.innerText = "0개 남음";
+                        progressBar.style.width = "0%";
+                        listBox.innerHTML = `<li class="empty-goal">등록된 목표가 없습니다.</li>`;
+                        return;
+                    }
+
+                    const uncompleted = filtered.filter(g => !g.checked).length;
+                    const completed = filtered.filter(g => g.checked).length;
+                    const percent = Math.round((completed / filtered.length) * 100);
+
+                    countBadge.innerText = `${uncompleted}개 남음`;
+                    progressBar.style.width = `${percent}%`;
+
+                    // 2) 리스트 그리기
+                    listBox.innerHTML = filtered.map(item => `
+                        <li class="goal-item ${item.checked ? 'done' : ''}" data-id="${item.id}">
+                            <div class="goal-item-left">
+                                <input type="checkbox" id="goal-chk-${item.id}" ${item.checked ? 'checked' : ''}>
+                                <label for="goal-chk-${item.id}">${item.text}</label>
+                            </div>
+                            <button class="btn-del-goal" title="삭제">×</button>
+                        </li>
+                    `).join('');
+                });
+            }
+
+            // 추가 및 삭제 버튼 이벤트 핸들러 (이벤트 위임)
+            document.querySelector('.goal-grid-layout').addEventListener('click', function(e) {
+                // 추가(+) 클릭
+                if (e.target.classList.contains('btn-add-goal')) {
+                    const type = e.target.dataset.type;
+                    const input = document.getElementById(`${type}-input`);
+                    const text = input.value.trim();
+
+                    if (!text) return alert("목표 내용을 입력해 주세요!");
+
+                    addGoalItem(type, text);
+                    input.value = ""; 
+                    renderAllGoals();
+                }
+
+                // 삭제(×) 클릭
+                if (e.target.classList.contains('btn-del-goal')) {
+                    const li = e.target.closest('.goal-item');
+                    const id = li.dataset.id;
+                    if (confirm("이 목표 항목을 제거하시겠습니까?")) {
+                        deleteGoalItem(id);
+                        renderAllGoals();
+                    }
+                }
+            });
+
+            // 체크박스 상태 변경 이벤트 위임
+            document.querySelector('.goal-grid-layout').addEventListener('change', function(e) {
+                if (e.target.type === 'checkbox') {
+                    const li = e.target.closest('.goal-item');
+                    const id = li.dataset.id;
+                    toggleGoalItem(id);
+                    renderAllGoals();
+                }
+            });
+
+            // 엔터키 지원 리스너
+            ['weekly', 'monthly', 'yearly'].forEach(type => {
+                document.getElementById(`${type}-input`).addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const btn = document.querySelector(`.btn-add-goal[data-type="${type}"]`);
+                        if (btn) btn.click();
+                    }
+                });
+            });
+
+            // 초기 기동
+            renderAllGoals();
+        });
+    </script>
+</body>
+</html>

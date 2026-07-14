@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Link - 여행 기록</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="travel.css">
+
+    <script src="/JS/header-loader.js" defer></script>
+</head>
+<body>
+
+    <main class="travel-page-container">
+        <header class="travel-header-zone">
+            <h2>📸 우리 가족 여행 기록장</h2>
+            <p>다녀온 여행의 소중한 순간과 사진, 간략한 일정을 차곡차곡 보관하세요.</p>
+        </header>
+
+        <div class="travel-split-layout">
+            
+            <section class="travel-form-panel">
+                <h3>✈️ 새로운 여행 기록하기</h3>
+                <form id="travel-form" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="travel-title">여행 제목</label>
+                        <input type="text" id="travel-title" placeholder="예: 여름방학 강릉 경포대 여행" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="travel-date">여행 일정</label>
+                        <input type="text" id="travel-date" placeholder="예: 2026.07.01 ~ 07.03" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="travel-location">여행지 (위치)</label>
+                        <input type="text" id="travel-location" placeholder="예: 강원도 강릉시" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="travel-summary">간략한 추억 기록</label>
+                        <textarea id="travel-summary" placeholder="기억하고 싶은 에피소드나 맛집, 감상을 적어주세요..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="travel-image">대표 사진 첨부</label>
+                        <input type="file" id="travel-image" accept="image/*">
+                        <div class="image-preview" id="image-preview">사진을 첨부하면 여기에 미리보기가 나타납니다.</div>
+                    </div>
+
+                    <button type="button" class="btn-submit-travel" id="btn-save-travel">💾 여행 추억 저장하기</button>
+                </form>
+            </section>
+
+            <section class="travel-feed-panel">
+                <h3>🗓️ 우리의 추억 타임라인</h3>
+                <div class="travel-grid-feed" id="travel-feed-box">
+                    </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="/travel-core.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            const travelForm = document.getElementById('travel-form');
+            const fileInput = document.getElementById('travel-image');
+            const previewBox = document.getElementById('image-preview');
+            const feedBox = document.getElementById('travel-feed-box');
+            
+            let base64ImageStr = ""; // 사진 문자열 임시 저장 바구니
+
+            // 1. 이미지 첨부 시 미리보기 및 Base64 변환
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    base64ImageStr = event.target.result;
+                    previewBox.innerHTML = `<img src="${base64ImageStr}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">`;
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // 2. 피드 렌더링 함수
+            function renderTravelFeed() {
+                const items = getTravelData();
+                if(items.length === 0) {
+                    feedBox.innerHTML = `<div class="empty-feed">아직 등록된 여행 기록이 없습니다. 첫 추억을 공유해 보세요! 🗺️</div>`;
+                    return;
+                }
+
+                feedBox.innerHTML = items.map(item => {
+                    // 이미지가 없으면 기본 감성 배경색 박스 처리
+                    const imgTag = item.image 
+                        ? `<img src="${item.image}" alt="여행사진" class="card-img">`
+                        : `<div class="card-img-placeholder">🌅 No Photo</div>`;
+
+                    return `
+                        <div class="travel-card" data-id="${item.id}">
+                            ${imgTag}
+                            <button class="card-delete-btn" title="기록 삭제">×</button>
+                            <div class="card-body">
+                                <span class="card-date">📅 ${item.date}</span>
+                                <h4 class="card-title">${item.title}</h4>
+                                <span class="card-loc">📍 ${item.location}</span>
+                                <p class="card-summary">${item.summary}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // 3. 저장 버튼 클릭 이벤트
+            document.getElementById('btn-save-travel').addEventListener('click', function() {
+                const title = document.getElementById('travel-title').value.trim();
+                const date = document.getElementById('travel-date').value.trim();
+                const location = document.getElementById('travel-location').value.trim();
+                const summary = document.getElementById('travel-summary').value.trim();
+
+                if(!title || !date || !location || !summary) {
+                    return alert("모든 항목을 올바르게 채워주세요!");
+                }
+
+                // 데이터 엔진 호출
+                addTravelItem(title, date, location, summary, base64ImageStr);
+                alert("성공적으로 여행이 기록되었습니다!");
+
+                // 입력 폼 리셋
+                travelForm.reset();
+                previewBox.innerHTML = "사진을 첨부하면 여기에 미리보기가 나타납니다.";
+                base64ImageStr = "";
+
+                // 피드 갱신
+                renderTravelFeed();
+            });
+
+            // 4. 삭제 버튼 위임 이벤트
+            feedBox.addEventListener('click', function(e) {
+                if(e.target.classList.contains('card-delete-btn')) {
+                    const card = e.target.closest('.travel-card');
+                    const id = card.dataset.id;
+                    const title = card.querySelector('.card-title').innerText;
+
+                    if(confirm(`'${title}' 기록을 영구 삭제하시겠습니까?`)) {
+                        deleteTravelItem(id);
+                        renderTravelFeed();
+                    }
+                }
+            });
+
+            // 최초 로드 실행
+            renderTravelFeed();
+        });
+    </script>
+</body>
+</html>

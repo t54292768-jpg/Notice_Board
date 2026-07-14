@@ -1,4 +1,4 @@
-// [header-loader.js] 화면 크기에 완벽히 비례해서 늘어나는 유연한 가변형 헤더
+// [header-loader.js] 모든 메뉴 자동 활성화(파란색) 기능이 탑재된 가변형 헤더
 document.addEventListener("DOMContentLoaded", function() {
     if (!document.querySelector('link[href="style.css"]')) {
         const styleLink = document.createElement('link');
@@ -15,25 +15,23 @@ document.addEventListener("DOMContentLoaded", function() {
             display: flex !important;           
             justify-content: space-between;
             align-items: center;
-            padding: 10px clamp(15px, 2vw, 30px); /* 화면 크기에 맞춰 양옆 여백 유연화 */
+            padding: 10px clamp(15px, 2vw, 30px);
             background-color: #ffffff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             z-index: 9999;
             box-sizing: border-box;
-            height: clamp(70px, 6vw, 85px);     /* 헤더 높이도 화면 크기에 맞춰 가변 조절 */
+            height: clamp(70px, 6vw, 85px);
         }
         
-        /* [좌측 구역] 날짜 구역 - 밀림 방지 최소폭 유지하되 자연스럽게 확장 */
         .header-date { 
             min-width: 120px;
             width: 12%;
-            font-size: clamp(0.75rem, 0.85vw, 0.95rem); /* 글자 크기도 화면에 비례 */
+            font-size: clamp(0.75rem, 0.85vw, 0.95rem);
             color: #64748b; 
             font-weight: 500;
             white-space: nowrap; 
         }
         
-        /* [중앙 구역] 화면 크기에 따라 완전히 신축성 있게 늘어나는 공간 */
         .header-center { 
             flex: 1;
             display: flex;
@@ -43,16 +41,15 @@ document.addEventListener("DOMContentLoaded", function() {
             padding: 0 min(20px, 2vw);
         }
         .header-center h1 { 
-            font-size: clamp(1.2rem, 1.5vw, 1.8rem); /* 로고 텍스트 가변화 */
+            font-size: clamp(1.2rem, 1.5vw, 1.8rem);
             color: #1a1a1a; 
             margin: 0 0 4px 0; 
             font-weight: 800; 
         }
         
-        /* ★ 메뉴 슬라이더: 고정 값(720px)을 제거하고, 화면의 최대 85%까지 부드럽게 연동되어 늘어나도록 변경 */
         .nav-slider-wrapper { 
             width: 100%; 
-            max-width: 85%; /* 화면이 커지면 메뉴바도 시원하게 같이 팽창합니다 */
+            max-width: 85%; 
             display: flex; 
             align-items: center; 
             position: relative; 
@@ -67,23 +64,20 @@ document.addEventListener("DOMContentLoaded", function() {
         .nav-links { display: flex; align-items: center; overflow-x: auto; white-space: nowrap; padding: 4px 0; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-width: none; width: 100%; }
         .nav-links::-webkit-scrollbar { display: none; }
         
-        /* ★ 메뉴 간격 및 크기 가변화: 큰 화면에서는 글자와 간격이 시원시원하게 넓어짐 */
         .menu-item-group { display: flex; align-items: center; justify-content: center; scroll-snap-align: start; flex-shrink: 0; padding: 0 clamp(6px, 1vw, 16px); }
         .nav-links a { 
             text-decoration: none; 
             color: #4a5568; 
-            font-size: clamp(0.85rem, 0.95vw, 1.1rem); /* 글씨 크기 자동 스케일업 */
+            font-size: clamp(0.85rem, 0.95vw, 1.1rem); 
             font-weight: 500; 
             text-align: center; 
             transition: color 0.2s; 
         }
         .nav-links a:hover { color: #007bff; }
         
-        /* 메뉴 사이의 점(•) 간격도 화면에 맞춰 유연하게 조정 */
         .menu-item-group::after { content: '•'; color: #cbd5e1; font-size: 0.7rem; margin-left: clamp(10px, 1.2vw, 24px); }
         .menu-item-group:last-child::after { content: ''; margin-left: 0; }
         
-        /* [우측 구역] 프로필 절대 밀림 방지 기둥 확보 */
         .header-right { 
             min-width: 120px;
             width: 12%;
@@ -95,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .profile-link-wrapper:hover { transform: scale(1.03); }
         .profile-section { display: flex; align-items: center; gap: clamp(6px, 0.8vw, 12px); }
         
-        /* 프로필 사진 크기도 대화면에 맞춰 자연스럽게 볼륨업 */
         .profile-img { 
             width: clamp(38px, 3.5vw, 48px); 
             height: clamp(38px, 3.5vw, 48px); 
@@ -106,14 +99,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         .profile-name { font-size: clamp(0.8rem, 0.88vw, 1rem); color: #334155; font-weight: 600; }
 
-        /* 본문 스페이싱 (헤더 높이에 맞춰 유연하게 대응) */
-        body > main, .dashboard-container, .calendar-page-wrapper {
+        /* 모든 페이지 본문 겹침 방지 */
+        body > main, .dashboard-container, .calendar-page-wrapper, .diary-page-container, .todo-page-container {
             margin-top: clamp(95px, 8vw, 115px) !important;
             box-sizing: border-box;
         }
     `;
     document.head.appendChild(inlineStyle);
 
+    // 🛠️ 모든 메뉴 아이템에 추적용 고유 ID 추가
     const headerHtml = `
     <header class="main-header">
         <div class="header-date" id="current-date"></div>
@@ -123,14 +117,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button class="slide-btn left" id="slide-left"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
                 <nav class="nav-links" id="nav-links">
                     <div class="menu-item-group"><a href="/Calendar/calendar.html" id="nav-cal">캘린더</a></div>
-                    <div class="menu-item-group"><a href="#diary">다이어리</a></div>
-                    <div class="menu-item-group"><a href="#travel">여행 기록</a></div>
-                    <div class="menu-item-group"><a href="#account">가계부</a></div>
-                    <div class="menu-item-group"><a href="#fridge">냉장고 관리</a></div>
-                    <div class="menu-item-group"><a href="/Todo_list/todo_list_p.html">To-Do List</a></div>
-                    <div class="menu-item-group"><a href="#monthly-goal">이달의 목표</a></div>
-                    <div class="menu-item-group"><a href="#yearly-goal">올해의 목표</a></div>
-                    <div class="menu-item-group" style="scroll-snap-align: end;"><a href="#bucket">개인 버킷리스트</a></div>
+                    <div class="menu-item-group"><a href="/Diary/diary_p.html" id="nav-diary">다이어리</a></div>
+                    <div class="menu-item-group"><a href="/Travel/travel_p.html" id="nav-travel">여행 기록</a></div>
+                    <div class="menu-item-group"><a href="/Account/account_p.html" id="nav-account">가계부</a></div>
+                    <div class="menu-item-group"><a href="/Fridge/fridge_p.html" id="nav-fridge">냉장고 관리</a></div>
+                    <div class="menu-item-group"><a href="/Todo_list/todo_list_p.html" id="nav-todo">To-Do List</a></div>
+                    <div class="menu-item-group"><a href="/Goal/goal_p.html" id="nav-m-goal">목표</a></div>
+                    <div class="menu-item-group" style="scroll-snap-align: end;"><a href="/Bucket/bucket_p.html" id="nav-bucket">개인 버킷리스트</a></div>
                 </nav>
                 <button class="slide-btn right" id="slide-right"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
             </div>
@@ -147,11 +140,32 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
     document.body.insertAdjacentHTML('afterbegin', headerHtml);
 
-    if(window.location.href.includes('/Calendar/calendar.html')) {
-        const calLink = document.getElementById('nav-cal');
-        if(calLink) { calLink.style.color = '#007bff'; calLink.style.fontWeight = '700'; }
-    }
+    // 🛠️ [자동 활성화 엔진] 현재 주소 분석하여 매칭되는 탭만 파란색 칠하기
+    const currentUrl = window.location.href;
+    
+    const pageMapping = [
+        { key: '/Calendar/calendar.html', id: 'nav-cal' },
+        { key: 'diary_p.html', id: 'nav-diary' },
+        { key: 'travel_p.html', id: 'nav-travel' },
+        { key: 'account_p.html', id: 'nav-account' },
+        { key: 'fridge_p.html', id: 'nav-fridge' },
+        { key: 'todo_list_p.html', id: 'nav-todo' },
+        { key: 'monthly_p.html', id: 'nav-m-goal' },
+        { key: 'yearly_p.html', id: 'nav-y-goal' },
+        { key: 'bucket_p.html', id: 'nav-bucket' }
+    ];
 
+    pageMapping.forEach(page => {
+        if (currentUrl.includes(page.key)) {
+            const linkElement = document.getElementById(page.id);
+            if (linkElement) {
+                linkElement.style.color = '#007bff';
+                linkElement.style.fontWeight = '700';
+            }
+        }
+    });
+
+    // 실시간 날짜 로직
     const dateElement = document.getElementById('current-date');
     if (dateElement) {
         const today = new Date();
@@ -159,6 +173,7 @@ document.addEventListener("DOMContentLoaded", function() {
         dateElement.innerText = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')} (${weekMap[today.getDay()]})`;
     }
 
+    // 슬라이더 바인딩 로직
     const navLinks = document.getElementById('nav-links');
     const slideRight = document.getElementById('slide-right');
     const slideLeft = document.getElementById('slide-left');
